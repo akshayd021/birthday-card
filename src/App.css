@@ -1,38 +1,67 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scaleY(1.1);
+  }
+}
+body {
+  background-color: gray !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@layer utilities {
+  .animate-flicker {
+    animation: flicker 1s infinite ease-in-out;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Envelope.css */
+
+.flap-open {
+  animation: flapOpen 0.7s ease forwards;
 }
 
-.App-link {
-  color: #61dafb;
+.letter-open {
+  animation: letterSlide 1s ease forwards 0.7s;
 }
 
-@keyframes App-logo-spin {
+.heart-rotate {
+  animation: heartRotate 0.5s ease forwards 1s;
+}
+
+@keyframes flapOpen {
   from {
-    transform: rotate(0deg);
+    transform: rotateX(0);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotateX(180deg);
+  }
+}
+
+@keyframes letterSlide {
+  from {
+    bottom: 0;
+    transform: scale(1);
+  }
+  to {
+    bottom: 100px;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes heartRotate {
+  from {
+    transform: translate(-50%, -20%) rotate(45deg);
+  }
+  to {
+    transform: translate(-50%, -20%) rotate(90deg);
   }
 }
