@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { BirthdayCard } from '../Home/Birthday';
-import Envelope from '../animation';
-// import BOk from '../book/Book';
-import Book from './../book/Book';
-import BirthdayCake from '../github/birthdaycake';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Book from "../book/Book";
+import Confetti from "react-confetti";
 
 const User = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { width } = window.innerWidth;
+  const { height } = window.innerHeight;
+
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://192.168.29.47:5000/api/get-user/${id}`);
-        setUser(res?.data?.user); // Set the user data if found
-        setLoading(false); // Set loading to false after data is fetched
+        const res = await axios.get(
+          `http://192.168.29.119:5050/api/get-user/${id}`
+        );
+        setUser(res?.data?.user);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setLoading(false); // Stop loading if an error occurs
+        setLoading(false);
       }
     };
 
     fetchUser();
-  }, [id]); 
-  
+  }, [id]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -37,13 +39,19 @@ const User = () => {
 
   return (
     <div>
-      <h1>User Details</h1>
+
+      <Confetti width={width} height={height} />
+      {/* <h1>User Details</h1>
       <p>Name: {user.name}</p>
       <p>Age: {user.age}</p>
-      <p>Message: {user.message}</p>
-      <BirthdayCake/>
+      <p>Message: {user.message}</p> */}
 
-      {/* <Book name= {user.name} age={user.age} message={user.message}/> */}
+      <iframe
+        src="/cake.html"
+        title="Cake Animation"
+        style={{ width: "100%", height: "500px", border: "none" }}
+      />
+      <Book age={user?.age} message={user.message} name={user.name} />
     </div>
   );
 };

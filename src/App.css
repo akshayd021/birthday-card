@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 @keyframes flicker {
   0%,
   100% {
@@ -13,9 +19,7 @@
     transform: scaleY(1.1);
   }
 }
-body {
-  background-color: gray !important;
-}
+
 
 @layer utilities {
   .animate-flicker {

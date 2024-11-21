@@ -4,7 +4,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Envelope from "../animation";
-import BirthdayCake from "../github/birthdaycake";
+import { FaRegUser } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { MdOutlineContentCopy } from "react-icons/md";
 
 const Landing = () => {
   const [customUrlEnabled, setCustomUrlEnabled] = useState(false);
@@ -41,7 +43,7 @@ const Landing = () => {
         };
 
         const response = await axios.post(
-          "http://192.168.29.47:5000/api/create-user",
+          "http://192.168.29.119:5050/api/create-user",
           requestData
         );
 
@@ -58,7 +60,8 @@ const Landing = () => {
         setAnimation(true);
         setTimeout(() => {
           setModalOpen(true);
-        }, 8000);
+          setAnimation(false);
+        }, 7000);
         resetForm();
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -96,149 +99,189 @@ const Landing = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-md shadow-md mt-10">
-
-      {!animation && (
-        <>
-          <h2 className="text-lg font-semibold mb-4">
-            Enter the birthday person's name, age, and a custom message that
-            will appear after they blow out their candles.
-          </h2>
-          <form onSubmit={formik.handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-gray-700 font-medium">Name</label>
-              <input
-                type="text"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-                className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {formik.touched.name && formik.errors.name && (
-                <p className="text-red-500 text-sm">{formik.errors.name}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium">Age</label>
-              <input
-                type="number"
-                name="age"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.age}
-                className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {formik.touched.age && formik.errors.age && (
-                <p className="text-red-500 text-sm">{formik.errors.age}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium">Message</label>
-              <textarea
-                name="message"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.message}
-                className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="4"
-              ></textarea>
-              {formik.touched.message && formik.errors.message && (
-                <p className="text-red-500 text-sm">{formik.errors.message}</p>
-              )}
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="customUrlToggle"
-                checked={customUrlEnabled}
-                onChange={handleToggle}
-                className="mr-2"
-              />
-              <label
-                htmlFor="customUrlToggle"
-                className="text-gray-700 font-medium"
-              >
-                Use Custom URL
-              </label>
-            </div>
-
-            {customUrlEnabled && (
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Custom URL Part
-                </label>
-                <input
-                  type="text"
-                  name="customUrlPart"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.customUrlPart}
-                  className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter custom part of URL (e.g., test-test)"
-                />
-                <p className="text-sm text-gray-400">{`${baseCustomUrl}${formik.values.customUrlPart}`}</p>
-                {formik.touched.customUrlPart &&
-                  formik.errors.customUrlPart && (
-                    <p className="text-red-500 text-sm">
-                      {formik.errors.customUrlPart}
-                    </p>
-                  )}
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              Submit
-            </button>
-          </form>
-        </>
-      )}
-
-      {animation && (
-        <div className="flex justify-center items-center m-auto">
-          <Envelope name={user?.name} />
-        </div>
-      )}
-
-      {/* Modal */}
+    <div className="flex min-h-screen">
       {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-80 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center transform transition-all duration-300 scale-105">
-            <p className="mb-4 text-gray-600">Here's your Link URL:</p>
-            <p className="text-blue-600 font-medium underline mb-4">
-              <Link to={user?.dummyLink} target="_blank">
-                {user?.dummyLink?.length > 40
-                  ? `${user?.dummyLink.slice(0, 40)}...`
-                  : user?.dummyLink}
-              </Link>
+        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md">
+          <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
+            <div className="right-2 absolute top-2 text-3xl">
+              <IoClose
+                className=""
+                onClick={() => {
+                  setModalOpen(false);
+                  setAnimation(false);
+                }}
+              />
+            </div>
+            <p className="mb-4 text-gray-600 text-lg font-semibold flex items-center gap-3">
+              <img src="/assets/c-url-icon.png" alt="url" />
+              Send This Link
             </p>
-            <button
-              onClick={handleCopy}
-              className="px-4 mr-3 py-2 mb-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200"
-            >
-              Copy URL
-            </button>
-            <p className="text-green-500 text-sm mt-2">{copyMessage}</p>{" "}
-            {/* Feedback message */}
-            <button
-              onClick={() => {
-                setModalOpen(false);
-                setAnimation(false);
-              }}
-              className="mt-4 ml-3 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none transition-colors duration-200"
-            >
-              Close
-            </button>
+            <div className="relative text-blue-600 font-medium text-lg underline mb-4 p-2 flex items-center border w-full">
+              <span className="truncate text-[16px]">
+                {user?.dummyLink?.length > 40
+                  ? `${user?.dummyLink.slice(0, 42)}...`
+                  : user?.dummyLink}
+              </span>
+              <div
+                className="absolute right-0 p-3 cursor-pointer border-2 border-blue-500 bg-blue-500 text-white hover:bg-blue-700"
+                onClick={handleCopy}
+              >
+                <MdOutlineContentCopy />
+              </div>
+            </div>
           </div>
         </div>
       )}
+      {animation && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-brightness-50 z-50 backdrop-blur-md">
+          <div className="flex justify-center items-center m-auto">
+            <Envelope name={user?.name} />
+          </div>
+        </div>
+      )}
+
+      <div
+        className="flex-1 bg-cover bg-center flex items-center justify-center relative"
+        style={{ backgroundImage: "url(/assets/fir.jpg)" }}
+      >
+        <div className="absolute top-4 left-7">
+          <img src="/assets/balloon.png" alt="text" className="w-[76%]" />
+        </div>
+        <div className="absolute top-7 right-7">
+          <img src="/assets/gift.png" alt="text" className="w-[80%]" />
+        </div>
+        <img src="/assets/text.png" alt="text" className="max-w-[75%]" />
+        <div className="absolute bottom-9 left-14">
+          <img src="/assets/choc.png" alt="text" className="w-[85%]" />
+        </div>
+        <div className="absolute bottom-28 right-8">
+          <img src="/assets/cak.png" alt="text" className="w-[85%]" />
+        </div>
+      </div>
+
+      <div
+        className="flex-1 bg-cover bg-center flex items-center justify-center"
+        style={{ backgroundImage: "url(/assets/secc.jpg)" }}
+      >
+        <div className=" text-center flex items-center flex-col justify-center h-full w-[70%] text-black">
+          <div className="rounded-lg  bg-white shadow-md p-4 relative">
+            <div className="absolute top-[-54px] left-[50%] transform -translate-x-[50%] flex gap-4">
+              <img src="./assets/candle.png" alt="Candle" className="w-16 " />
+              <img src="./assets/candle.png" alt="Candle" className="w-16" />
+              <img src="./assets/candle.png" alt="Candle" className="w-16" />
+            </div>
+            <div className="w-full p-6 rounded-md ">
+              <>
+                <h2 className="text-lg font-semibold mb-4">
+                  Enter the birthday person's name, age, and a custom message
+                  that will appear after they blow out their candles.
+                </h2>
+                <form onSubmit={formik.handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="text-gray-700 font-medium flex items-center text-lg gap-3">
+                      <FaRegUser />
+                      Name*
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.name}
+                      className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {formik.touched.name && formik.errors.name && (
+                      <p className="text-red-500 text-sm">
+                        {formik.errors.name}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-gray-700 font-medium text-lg flex items-center gap-3">
+                      <img src="/assets/age-icon.png" alt="age" width={20} />
+                      Age*
+                    </label>
+                    <input
+                      type="number"
+                      name="age"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.age}
+                      className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {formik.touched.age && formik.errors.age && (
+                      <p className="text-red-500 text-sm">
+                        {formik.errors.age}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-gray-700 font-medium text-lg flex items-center gap-3">
+                      <img src="/assets/msg-icon.png" alt="age" width={20} />
+                      Message*
+                    </label>
+                    <textarea
+                      name="message"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.message}
+                      className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows="2"
+                    ></textarea>
+                    {formik.touched.message && formik.errors.message && (
+                      <p className="text-red-500 text-sm">
+                        {formik.errors.message}
+                      </p>
+                    )}
+                  </div>
+                  <label className="inline-flex items-center cursor-pointer border-2 border-[#619FEB] p-2 w-full rounded-md">
+                    <input
+                      type="checkbox"
+                      value=""
+                      className="sr-only peer"
+                      checked={customUrlEnabled}
+                      onChange={handleToggle}
+                    />
+                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                    <span className="ms-3 text-lg font-medium">
+                      Get a custom URL for $0.99!
+                    </span>
+                  </label>
+                  {customUrlEnabled && (
+                    <div>
+                      <label className="block text-gray-700 font-medium">
+                        Custom URL*
+                      </label>
+                      <input
+                        type="text"
+                        name="customUrlPart"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.customUrlPart}
+                        className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter custom part of URL (e.g., test-test)"
+                      />
+                      <p className="text-sm text-gray-400">{`${baseCustomUrl}${formik.values.customUrlPart}`}</p>
+                      {formik.touched.customUrlPart &&
+                        formik.errors.customUrlPart && (
+                          <p className="text-red-500 text-sm">
+                            {formik.errors.customUrlPart}
+                          </p>
+                        )}
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  >
+                    Submit
+                  </button>
+                </form>
+              </>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

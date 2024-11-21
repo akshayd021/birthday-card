@@ -1,12 +1,5 @@
 html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: "Times New Roman", Times, serif;
-  /* background-image: radial-gradient(ellipse at center, blanchedalmond 0%, tan 100%); */
-}
+
 
 *,
 *::before,
@@ -37,12 +30,14 @@ body {
   font-size: 16px;
   line-height: 18px;
   color: black;
-  background-color: #d0bbbb;
-  background-image: linear-gradient(
+  background-image: url("../../../public/assets/animation-bg.jpg");
+  background-size: cover;
+  background-repeat: no;
+  /* background-image: linear-gradient(
     to right,
     rgba(0, 0, 0, 0.15) 0%,
     rgba(0, 0, 0, 0) 10%
-  );
+  ); */
   transition: transform 0.5s;
   transform: rotateY(-180deg);
   backface-visibility: hidden;
@@ -52,11 +47,9 @@ body {
 
   &:nth-of-type(2n) {
     left: 1px;
-    background-image: linear-gradient(
-      to left,
-      rgba(0, 0, 0, 0.12) 0%,
-      rgba(0, 0, 0, 0) 10%
-    );
+    background-image: url("../../../public/assets/animation-bg.jpg");
+    background-size: cover;
+    background-repeat: no;
     transform-origin: right center;
     transform: rotateY(0);
 
@@ -112,6 +105,10 @@ input:checked {
   top: 0;
   border-radius: 0 3px 3px 0;
   background-color: #a28089;
+  background-image: url("../../../public/assets/animation-bg.jpg");
+  background-size: cover;
+  background-repeat: no;
+  z-index: 999999;
 
   h1 {
     color: #ec5757;
@@ -139,7 +136,7 @@ input:checked {
 
   &:first-of-type,
   &:last-of-type {
-    background-image: none;
+    /* background-image: none; */
 
     &::before {
       content: "";
