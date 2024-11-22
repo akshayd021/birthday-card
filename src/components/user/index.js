@@ -11,7 +11,6 @@ const User = () => {
   const { width } = window.innerWidth;
   const { height } = window.innerHeight;
 
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -39,18 +38,12 @@ const User = () => {
 
   return (
     <div>
-
       <Confetti width={width} height={height} />
       {/* <h1>User Details</h1>
       <p>Name: {user.name}</p>
       <p>Age: {user.age}</p>
       <p>Message: {user.message}</p> */}
 
-      <iframe
-        src="/cake.html"
-        title="Cake Animation"
-        style={{ width: "100%", height: "500px", border: "none" }}
-      />
       <Book age={user?.age} message={user.message} name={user.name} />
     </div>
   );

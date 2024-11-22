@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import Envelope from "../animation";
 import { FaRegUser } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -13,7 +12,6 @@ const Landing = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
-  const [copyMessage, setCopyMessage] = useState(""); // State for copy feedback
 
   const baseCustomUrl = "http://192.168.29.47:3000/user/";
 
@@ -99,9 +97,9 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="lg:flex min-h-screen">
       {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
           <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
             <div className="right-2 absolute top-2 text-3xl">
               <IoClose
@@ -141,21 +139,41 @@ const Landing = () => {
       )}
 
       <div
-        className="flex-1 bg-cover bg-center flex items-center justify-center relative"
+        className="flex-1 bg-cover bg-center flex items-center justify-center relative py-[6rem]"
         style={{ backgroundImage: "url(/assets/fir.jpg)" }}
       >
-        <div className="absolute top-4 left-7">
-          <img src="/assets/balloon.png" alt="text" className="w-[76%]" />
+        <div className="absolute lg:top-4 top-1 lg:left-7 left-0">
+          <img
+            src="/assets/balloon.png"
+            alt="text"
+            className="lg:w-[76%] w-[45%]"
+          />
         </div>
-        <div className="absolute top-7 right-7">
-          <img src="/assets/gift.png" alt="text" className="w-[80%]" />
+        <div className="absolute lg:top-7  top-1 lg:right-7 -right-3">
+          <img
+            src="/assets/gift.png"
+            alt="text"
+            className="lg:w-[80%] w-[50%]"
+          />
         </div>
-        <img src="/assets/text.png" alt="text" className="max-w-[75%]" />
-        <div className="absolute bottom-9 left-14">
-          <img src="/assets/choc.png" alt="text" className="w-[85%]" />
+        <img
+          src="/assets/text.png"
+          alt="text"
+          className="lg:max-w-[75%] w-[70%] "
+        />
+        <div className="absolute lg:bottom-9 bottom-1 lg:left-14 left-3">
+          <img
+            src="/assets/choc.png"
+            alt="text"
+            className="lg:w-[85%] w-[50%]"
+          />
         </div>
-        <div className="absolute bottom-28 right-8">
-          <img src="/assets/cak.png" alt="text" className="w-[85%]" />
+        <div className="absolute lg:bottom-28 bottom-4 lg:right-8 right-0">
+          <img
+            src="/assets/cak.png"
+            alt="text"
+            className="lg:w-[85%] w-[50%]"
+          />
         </div>
       </div>
 
@@ -163,16 +181,16 @@ const Landing = () => {
         className="flex-1 bg-cover bg-center flex items-center justify-center"
         style={{ backgroundImage: "url(/assets/secc.jpg)" }}
       >
-        <div className=" text-center flex items-center flex-col justify-center h-full w-[70%] text-black">
+        <div className="  flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[90%] text-black">
           <div className="rounded-lg  bg-white shadow-md p-4 relative">
-            <div className="absolute top-[-54px] left-[50%] transform -translate-x-[50%] flex gap-4">
+            <div className="absolute top-[-54px] lg:left-[50%] left-[45%] transform -translate-x-[50%] flex gap-4">
               <img src="./assets/candle.png" alt="Candle" className="w-16 " />
               <img src="./assets/candle.png" alt="Candle" className="w-16" />
               <img src="./assets/candle.png" alt="Candle" className="w-16" />
             </div>
             <div className="w-full p-6 rounded-md ">
               <>
-                <h2 className="text-lg font-semibold mb-4">
+                <h2 className="lg:text-lg text-sm font-semibold mb-4">
                   Enter the birthday person's name, age, and a custom message
                   that will appear after they blow out their candles.
                 </h2>
@@ -185,6 +203,7 @@ const Landing = () => {
                     <input
                       type="text"
                       name="name"
+                      placeholder="Name"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
@@ -197,12 +216,17 @@ const Landing = () => {
                     )}
                   </div>
                   <div>
-                    <label className="text-gray-700 font-medium text-lg flex items-center gap-3">
-                      <img src="/assets/age-icon.png" alt="age" width={20} />
+                    <label className="text-gray-700 font-medium lg:text-lg   flex items-center gap-3">
+                      <img
+                        src="/assets/age-icon.png"
+                        alt="age"
+                        className="w-5"
+                      />
                       Age*
                     </label>
                     <input
                       type="number"
+                      placeholder="Age"
                       name="age"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -224,6 +248,7 @@ const Landing = () => {
                       name="message"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      placeholder="Message"
                       value={formik.values.message}
                       className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       rows="2"
@@ -243,7 +268,7 @@ const Landing = () => {
                       onChange={handleToggle}
                     />
                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                    <span className="ms-3 text-lg font-medium">
+                    <span className="ms-3 lg:text-lg  text-sm  font-medium">
                       Get a custom URL for $0.99!
                     </span>
                   </label>
@@ -258,8 +283,8 @@ const Landing = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.customUrlPart}
-                        className="w-full p-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter custom part of URL (e.g., test-test)"
+                        className="w-full p-2 mt-1 border rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter custom  (e.g., test-test)"
                       />
                       <p className="text-sm text-gray-400">{`${baseCustomUrl}${formik.values.customUrlPart}`}</p>
                       {formik.touched.customUrlPart &&
