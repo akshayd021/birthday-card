@@ -12,7 +12,7 @@ const User = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://192.168.29.119:5050/api/get-user/${id}`
+          `https://birthday-cake-backend-1.onrender.com/api/get-user/${id}`
         );
         setUser(res?.data?.user);
       } catch (error) {

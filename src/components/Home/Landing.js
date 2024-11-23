@@ -13,7 +13,7 @@ const Landing = () => {
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
 
-  const baseCustomUrl = "http://192.168.29.119:3000/user/";
+  const baseCustomUrl = "https://birthday-cake-sigma.vercel.app/user/";
 
   const formik = useFormik({
     initialValues: {
@@ -41,13 +41,13 @@ const Landing = () => {
         };
 
         const response = await axios.post(
-          "http://192.168.29.119:5050/api/create-user",
+          "https://birthday-cake-backend-1.onrender.com/api/create-user",
           requestData
         );
 
         const newUser = response?.data.user;
 
-        const dummyLink = `http://192.168.29.47:3000/user/${
+        const dummyLink = `https://birthday-cake-sigma.vercel.app/user/${
           customUrlEnabled ? values.customUrlPart : newUser._id
         }`;
 
