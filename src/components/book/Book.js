@@ -5,6 +5,8 @@ import { HiOutlineCursorClick } from "react-icons/hi";
 import { FaMicrophone } from "react-icons/fa";
 import ConfettiContainer from "./ConfettiContainer";
 import { handleCandleBlow } from "./candleManager";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Book = ({ name, message }) => {
   const bookRef = useRef(null);
@@ -17,9 +19,16 @@ const Book = ({ name, message }) => {
     setIsRequesting(true);
     setError(""); // Clear any previous errors
     try {
-      // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setMicAccessGranted(true);
+      toast.success("Microphone access granted!", {
+        theme: "dark", 
+        position: "top-right", 
+        autoClose: 3000, 
+        closeOnClick: true, 
+        pauseOnHover: true, 
+        draggable: true, 
+      });
       console.log("Microphone access granted!");
 
       // Stop the stream (optional, if you don't want to record audio immediately)
@@ -29,7 +38,14 @@ const Book = ({ name, message }) => {
     } catch (err) {
       // Handle errors (e.g., user denies access or browser issue)
       console.error("Error accessing microphone:", err);
-      setError("Microphone access denied or unavailable.");
+         toast.error("Microphone access denied or unavailable.", {
+          theme: "dark", 
+          position: "top-right", 
+          autoClose: 3000, 
+          closeOnClick: true, 
+          pauseOnHover: true, 
+          draggable: true, 
+      });
       setIsRequesting(false);
     }
   };
@@ -99,9 +115,9 @@ const Book = ({ name, message }) => {
         showCover={true}
         onFlip={handleFlip}
       >
-        <div className="page">
+        <div className="page text-white">
           <div className=" py-2 px-10 mt-14  lg:mt-0 flex flex-col lg:justify-center  text-center items-center min-h-full">
-            <h2 className="text-center lg:text-[43px] text-[32px] font-bold leading-[50px] capitalize">
+            <h2 className="text-center lg:text-[56px] text-[32px] font-bold leading-[50px] capitalize font-purplepurse">
               Happy birthday
             </h2>
             <h2 className="text-center lg:text-[55px] text-[42px] lg:mt-8 font-bold leading-[65px] capitalize ">
@@ -113,8 +129,8 @@ const Book = ({ name, message }) => {
           </div>
         </div>
 
-        <div className="page">
-          <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center font-pontano">
+        <div className="page text-white">
+          <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center ">
             Blow!
           </h2>
           <h2 className="lg:mt-3 mt-1 text-xl text-center">(For a surprise)</h2>
@@ -137,20 +153,20 @@ const Book = ({ name, message }) => {
             onClick={requestMicAccess}
             className="mx-auto flex items-center bg-[#4a4a4a] opacity-70 py-2 px-6 rounded-md text-white gap-2 lg:text-xl text-sm capitalize font-semibold"
           >
-            <FaMicrophone className="text-2xl" /> 
+            <FaMicrophone className="text-2xl" />
             {isRequesting ? "Requesting..." : "Allow access to mic"}
           </button>
-          {isMicAccessGranted && (
-        <p className="text-green-500 text-sm">Microphone access granted!</p>
-      )}
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+          {/* {isMicAccessGranted && (
+            <p className="text-green-500 text-sm">Microphone access granted!</p>
+          )} */}
+          {/* {error && <p className="text-red-500 text-sm">{error}</p>} */}
         </div>
-        <div className="page">
+        <div className="page text-white">
           <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
-            {message}
+            {message || "Happy Birthday"}
           </p>
         </div>
-        <div className="page">Back Cover</div>
+        {/* <div className="page">Back Cover</div> */}
       </HTMLFlipBook>
     </div>
   );

@@ -1,13 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&family=Pontano+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&family=Pontano+Sans&display=swap");
 
-
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
 }
 
@@ -23,14 +23,12 @@ body, html {
   }
 }
 
-
 @layer utilities {
   .animate-flicker {
     animation: flicker 1s infinite ease-in-out;
   }
 }
 
-/* Envelope.css */
 
 .flap-open {
   animation: flapOpen 0.7s ease forwards;

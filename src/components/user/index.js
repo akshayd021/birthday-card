@@ -5,7 +5,7 @@ import Book from "../book/Book";
 import Loader from "../../shared/Loader";
 
 const User = () => {
-  const { id } = useParams(); // Extract ID from the route
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,15 +26,17 @@ const User = () => {
     fetchUser();
   }, [id]);
 
-
-  if (!user) {
-    return <div>User not found.</div>;
-  }
-
   return (
-    <div>
+    <div className="relative">
       {loading && <Loader loading={loading} />}
-      <Book age={user?.age} message={user.message} name={user.name}  />
+      <div
+        className="bg-center bg-no-repeat bg-opacity-50 bg-cover min-h-screen opacity-80"
+        style={{ backgroundImage: "url(/assets/main.jpg)" }}
+      >
+        {user && (
+          <Book age={user?.age} message={user?.message} name={user.name} />
+        )}
+      </div>
     </div>
   );
 };

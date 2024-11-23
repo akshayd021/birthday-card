@@ -6,13 +6,14 @@ import Envelope from "../animation";
 import { FaRegUser } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineContentCopy } from "react-icons/md";
+import Loader from "../../shared/Loader";
 
 const Landing = () => {
   const [customUrlEnabled, setCustomUrlEnabled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const baseCustomUrl = "https://birthday-cake-sigma.vercel.app/user/";
 
   const formik = useFormik({
@@ -35,6 +36,7 @@ const Landing = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        setLoading(true);
         const requestData = {
           ...values,
           customUrl: customUrlEnabled ? values.customUrlPart : undefined,
@@ -46,7 +48,7 @@ const Landing = () => {
         );
 
         const newUser = response?.data.user;
-
+        setLoading(false);
         const dummyLink = `https://birthday-cake-sigma.vercel.app/user/${
           customUrlEnabled ? values.customUrlPart : newUser._id
         }`;
@@ -63,6 +65,7 @@ const Landing = () => {
         resetForm();
       } catch (error) {
         console.error("Error submitting form:", error);
+        setLoading(false);
       }
     },
   });
@@ -98,6 +101,7 @@ const Landing = () => {
 
   return (
     <div className="lg:flex min-h-screen">
+      {loading && <Loader loading={loading} />}
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
           <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
