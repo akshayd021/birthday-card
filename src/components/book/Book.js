@@ -163,7 +163,8 @@ const Book = ({ name, message }) => {
         </div>
         <div className="page text-white">
           <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
-            {message || "Happy Birthday"}
+          {message?.length > 520 ? `${message.slice(0, 520)}...` : message}
+
           </p>
         </div>
         {/* <div className="page">Back Cover</div> */}

@@ -26,9 +26,9 @@ const Envelope = ({ name }) => {
       <div className={`envelope-wrapper ${isOpen ? "flap" : ""}`}>
         <div className="envelope">
           <div className="letter">
-            <div className="text">
-              <p className="text-center text-xl font-bold">Happy Birthday</p>
-              <p className="text-center text-xl font-bold">{name || ""}</p>
+            <div className="text text-white">
+              <p className="text-center text-xl font-bold text-white">Happy Birthday</p>
+              <p className="text-center text-xl font-bold text-white">{name || ""}</p>
             </div>
           </div>
         </div>
