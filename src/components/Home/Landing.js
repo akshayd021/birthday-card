@@ -13,7 +13,7 @@ const Landing = () => {
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
 
-  const baseCustomUrl = "http://192.168.29.47:3000/user/";
+  const baseCustomUrl = "http://192.168.29.119:3000/user/";
 
   const formik = useFormik({
     initialValues: {
@@ -146,14 +146,15 @@ const Landing = () => {
           <img
             src="/assets/balloon.png"
             alt="text"
-            className="lg:w-[76%] w-[45%]"
+            className="lg:w-[76%] w-[45%] animate-jump"
           />
         </div>
+
         <div className="absolute lg:top-7  top-1 lg:right-7 -right-3">
           <img
             src="/assets/gift.png"
             alt="text"
-            className="lg:w-[80%] w-[50%]"
+            className="lg:w-[80%] w-[50%] animate-zoom"
           />
         </div>
         <img
@@ -165,20 +166,20 @@ const Landing = () => {
           <img
             src="/assets/choc.png"
             alt="text"
-            className="lg:w-[85%] w-[50%]"
+            className="lg:w-[85%] w-[50%] animate-zoom"
           />
         </div>
-        <div className="absolute lg:bottom-28 bottom-4 lg:right-8 right-0">
+        <div className="absolute lg:bottom-28 bottom-4 lg:right-8 right-[-12px]">
           <img
             src="/assets/cak.png"
             alt="text"
-            className="lg:w-[85%] w-[50%]"
+            className="lg:w-[85%] w-[50%] animate-jump"
           />
         </div>
       </div>
 
       <div
-        className="flex-1 bg-cover bg-center flex items-center justify-center"
+        className="flex-1 bg-cover bg-center flex items-center justify-center rounded-t-xl lg:rounded-none"
         style={{ backgroundImage: "url(/assets/secc.jpg)" }}
       >
         <div className="  flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[90%] text-black">

@@ -3,6 +3,8 @@ import HTMLFlipBook from "react-pageflip";
 import "./book.css";
 import { HiOutlineCursorClick } from "react-icons/hi";
 import { FaMicrophone } from "react-icons/fa";
+import ConfettiContainer from "./ConfettiContainer";
+import { handleCandleBlow } from "./candleManager";
 
 const Book = ({ name, message }) => {
   const bookRef = useRef(null);
@@ -26,6 +28,17 @@ const Book = ({ name, message }) => {
       console.error("Error accessing microphone:", err);
     }
   };
+  useEffect(() => {
+    const candleBlownStatus = sessionStorage.getItem("candleBlown");
+
+    if (candleBlownStatus) {
+      // Apply styles directly to the flame element
+      const flameElement = document.querySelector("#cake-holder.done .flame");
+      if (flameElement) {
+        flameElement.style.opacity = 0;
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,8 +70,28 @@ const Book = ({ name, message }) => {
     setCurrentPage(e.data);
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (sessionStorage.getItem("candleBlown")) {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      sessionStorage.removeItem("candleBlown");
+    };
+  }, []);
+  console.log("CandleBlown Status:", sessionStorage.getItem("candleBlown"));
+  console.log(
+    "Flame Elements:",
+    document.querySelectorAll(".cake-holder.done .flame")
+  );
+  document.querySelectorAll(".cake-holder.done .flame");
+
   return (
     <div className="flipbook-container">
+      <ConfettiContainer />
       <HTMLFlipBook
         ref={bookRef}
         width={isMobile ? 300 : 600}
@@ -76,7 +109,8 @@ const Book = ({ name, message }) => {
         onFlip={handleFlip}
       >
         <div className="page">
-          <div className="py-2 px-10 mt-14  lg:mt-0 flex flex-col lg:justify-center  text-center items-center min-h-full">
+          {/* first Page */}
+          <div className=" py-2 px-10 mt-14  lg:mt-0 flex flex-col lg:justify-center  text-center items-center min-h-full">
             <h2 className="text-center lg:text-[43px] text-[32px] font-bold leading-[50px] capitalize">
               Happy birthday
             </h2>
@@ -89,11 +123,13 @@ const Book = ({ name, message }) => {
           </div>
         </div>
         <div className="page">
-          <p className="flex justify-center m-auto items-center text-center min-h-full font-semibold text-2xl">
+          {/* second page */}
+          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
             {message}
           </p>
         </div>
         <div className="page">
+          {/* third page */}
           <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center font-pontano">
             Blow!
           </h2>
@@ -103,13 +139,14 @@ const Book = ({ name, message }) => {
             title="Cake Animation"
             style={{
               width: isMobile ? "90%" : "100%",
-              height:isMobile ? "400px" :  "500px",
+              height: isMobile ? "400px" : "500px",
               border: "none",
-              marginTop: isMobile ? "" : '',
             }}
-            
           />
-          <button className="absolute right-6 top-4 inline-flex underline items-center gap-2 lg:text-xl  text-lg font-semibold">
+          <button
+            className="absolute right-6 top-4 inline-flex underline items-center gap-2 lg:text-xl  text-lg font-semibold"
+            onClick={handleCandleBlow}
+          >
             Skip
           </button>
           <button
@@ -131,7 +168,10 @@ const Book = ({ name, message }) => {
 
           {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
-        <div className="page">Back Cover</div>
+        <div className="page">
+          {/* fourth  */}
+          Back Cover
+        </div>
       </HTMLFlipBook>
     </div>
   );

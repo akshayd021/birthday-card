@@ -1,25 +1,21 @@
 /* eslint-env browser */
 
-const dB = (signal) => - Math.round( 20 * Math.log10( 1 / signal ) )
+const dB = (signal) => -Math.round(20 * Math.log10(1 / signal));
 
 /**
  * speechDetectionListeners
  *
  */
 
-function hystogramLine( value ) {
+function hystogramLine(value) {
+  const maxCharsperLine = 200;
+  const valueInChars = maxCharsperLine * value;
+  const char = "█";
 
-  const maxCharsperLine = 200
-  const valueInChars = maxCharsperLine * value
-  const char = '█'
-
-  return char.repeat(valueInChars)
-
+  return char.repeat(valueInChars);
 }
 
-
 function showConfiguration() {
-
   // document.querySelector('#SAMPLE_POLLING_MSECS').textContent = SAMPLE_POLLING_MSECS
   // document.querySelector('#MAX_INTERSPEECH_SILENCE_MSECS').textContent = MAX_INTERSPEECH_SILENCE_MSECS
   // document.querySelector('#MIN_SIGNAL_DURATION').textContent = MIN_SIGNAL_DURATION
@@ -27,28 +23,26 @@ function showConfiguration() {
   // document.querySelector('#VOLUME_SILENCE').textContent = VOLUME_SILENCE
   // document.querySelector('#VOLUME_MUTE').textContent = VOLUME_MUTE
   // document.querySelector('#MIN_AVERAGE_SIGNAL_VOLUME').textContent = MIN_AVERAGE_SIGNAL_VOLUME
-
 }
-
 
 //
 // signal handler
 //
-document.addEventListener('signal', event => {
+document.addEventListener("signal", (event) => {
+  const volume = event.detail.volume.toFixed(9);
+  const timestamp = event.detail.timestamp;
+  const items = event.detail.items.toString().padEnd(3);
+  const dBV = dB(event.detail.volume);
 
-  const volume = event.detail.volume.toFixed(9)
-  const timestamp = event.detail.timestamp
-  const items = event.detail.items.toString().padEnd(3)
-  const dBV = dB(event.detail.volume)
-
-  const line = hystogramLine(volume)
-  console.log('dbV',dBV)
-  if (dBV >= -17){
-    console.log('Happy Birth Day')
-    showCake()
+  const line = hystogramLine(volume);
+  console.log("dbV", dBV);
+  if (dBV >= -17) {
+    console.log("Happy Birth Day");
+    showCake();
+    sessionStorage.setItem("candleBlown", "true");
   }
   if (debuglog)
-    console.log(`signal  ${timestamp} ${items} ${volume} ${dBV} ${line}`)
+    console.log(`signal  ${timestamp} ${items} ${volume} ${dBV} ${line}`);
 
   // document.querySelector('#audiostatuscell').style.background = 'green'
   // document.querySelector('#audiostatuscell').style.color = 'black'
@@ -58,76 +52,61 @@ document.addEventListener('signal', event => {
   //const theDiv = document.getElementById('log')
   //const content = document.createTextNode(text)
   //theDiv.appendChild(content)
-
-})
+});
 
 //
 // silence handler
 //
-document.addEventListener('silence', event => {
+document.addEventListener("silence", (event) => {
+  const volume = event.detail.volume.toFixed(9);
+  const timestamp = event.detail.timestamp;
+  const items = event.detail.items.toString().padEnd(3);
+  const dBV = dB(event.detail.volume);
 
-  const volume = event.detail.volume.toFixed(9)
-  const timestamp = event.detail.timestamp
-  const items = event.detail.items.toString().padEnd(3)
-  const dBV = dB(event.detail.volume)
-
-  if (debuglog)
-    console.log(`silence ${timestamp} ${items} ${volume} ${dBV}`)
+  if (debuglog) console.log(`silence ${timestamp} ${items} ${volume} ${dBV}`);
 
   // document.querySelector('#audiostatuscell').style.background = 'black'
   // document.querySelector('#audiostatuscell').style.color = 'white'
   // document.querySelector('#audiostatus').style.background = 'black'
   // document.querySelector('#audiostatus').textContent = 'silence'
-
-})
+});
 
 //
 // mute handler
 //
-document.addEventListener('mute', event => {
+document.addEventListener("mute", (event) => {
+  const volume = event.detail.volume.toFixed(9);
+  const timestamp = event.detail.timestamp;
+  const dBV = dB(event.detail.volume);
 
-  const volume = event.detail.volume.toFixed(9)
-  const timestamp = event.detail.timestamp
-  const dBV = dB(event.detail.volume)
-
-  if (debuglog)
-    console.log(`mute    ${timestamp} ${volume} ${dBV}`)
+  if (debuglog) console.log(`mute    ${timestamp} ${volume} ${dBV}`);
 
   // document.querySelector('#audiostatus').textContent = 'mute'
-
-})
-
+});
 
 //
 // prespeechstart handler
 //
-document.addEventListener('prespeechstart', event => {
-
+document.addEventListener("prespeechstart", (event) => {
   if (debuglog) {
-
     //const volume = event.detail.volume.toFixed(9)
-    const timestamp = event.detail.timestamp
+    const timestamp = event.detail.timestamp;
     //const dBV = dB(event.detail.volume)
 
     //console.log(`%cPRE SPEECH START    ${timestamp} ${volume} ${dBV}`, 'color:yellow')
-    console.log(`%cPRE SPEECH START   ${timestamp}`, 'color:blue')
-
+    console.log(`%cPRE SPEECH START   ${timestamp}`, "color:blue");
   }
 
-  restartRecording()
-
-})
-
+  restartRecording();
+});
 
 //
 // speechstart handler
 //
-document.addEventListener('speechstart', event => {
-
+document.addEventListener("speechstart", (event) => {
   if (debuglog) {
-
     //speechstartTime = event.detail.timestamp
-    console.log('%cSPEECH START', 'color:greenyellow')
+    console.log("%cSPEECH START", "color:greenyellow");
   }
 
   // document.querySelector('#recordingcell').style.background = 'green'
@@ -137,26 +116,25 @@ document.addEventListener('speechstart', event => {
   // document.querySelector('#recording').textContent = 'start'
 
   //startRecording()
-
-})
+});
 
 //
 // speechstop handler
 //
-document.addEventListener('speechstop', event => {
-
-  const duration = event.detail.duration
+document.addEventListener("speechstop", (event) => {
+  const duration = event.detail.duration;
 
   if (debuglog) {
+    const averageSignalLevel = averageSignal();
 
-    const averageSignalLevel = averageSignal()
-
-    console.log('%cSPEECH STOP', 'color:lime')
-    console.log(`Total Duration in msecs  : ${duration}`)
-    console.log(`Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS }`)
-    console.log(`Average Signal level     : ${averageSignalLevel}`)
-    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`)
-    console.log(' ')
+    console.log("%cSPEECH STOP", "color:lime");
+    console.log(`Total Duration in msecs  : ${duration}`);
+    console.log(
+      `Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS}`
+    );
+    console.log(`Average Signal level     : ${averageSignalLevel}`);
+    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`);
+    console.log(" ");
   }
 
   // document.querySelector('#recordingcell').style.color = 'white'
@@ -165,29 +143,28 @@ document.addEventListener('speechstop', event => {
   // document.querySelector('#recording').style.background = 'black'
   // document.querySelector('#recording').textContent = `stop. len: ${duration} msecs`
 
-  stopRecording()
-
-})
+  stopRecording();
+});
 
 //
 // speechabort handler
 //
-document.addEventListener('speechabort', event => {
-
-  const abort = event.detail.abort
+document.addEventListener("speechabort", (event) => {
+  const abort = event.detail.abort;
 
   if (debuglog) {
+    const duration = event.detail.duration;
+    const averageSignalLevel = averageSignal();
 
-    const duration = event.detail.duration
-    const averageSignalLevel = averageSignal()
-
-    console.log('%cSPEECH ABORT', 'color:red')
-    console.log(`Abort reason             : ${abort}`)
-    console.log(`Total Duration in msecs  : ${duration}`)
-    console.log(`Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS }`)
-    console.log(`Average Signal level     : ${averageSignalLevel}`)
-    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`)
-    console.log(' ')
+    console.log("%cSPEECH ABORT", "color:red");
+    console.log(`Abort reason             : ${abort}`);
+    console.log(`Total Duration in msecs  : ${duration}`);
+    console.log(
+      `Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS}`
+    );
+    console.log(`Average Signal level     : ${averageSignalLevel}`);
+    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`);
+    console.log(" ");
   }
 
   // document.querySelector('#recordingcell').style.color = 'white'
@@ -196,37 +173,31 @@ document.addEventListener('speechabort', event => {
   // document.querySelector('#recording').style.background = 'red'
   // document.querySelector('#recording').textContent = `abort. ${abort}`
 
-  abortRecording()
-
-})
+  abortRecording();
+});
 
 //
 // mutedmic handler
 //
-document.addEventListener('mutedmic', event => {
-
+document.addEventListener("mutedmic", (event) => {
   // document.querySelector('#microphonestatus').textContent = 'muted (off)'
   // document.querySelector('#microphonestatus').style.background = 'red'
   // document.querySelector('#microphonestatuscell').style.background = 'red'
 
-  console.log('%cMICROPHONE MUTED', 'color:red')
-  console.log(' ')
-
-})
+  console.log("%cMICROPHONE MUTED", "color:red");
+  console.log(" ");
+});
 
 //
 // unmutedmic handler
 //
-document.addEventListener('unmutedmic', event => {
-
+document.addEventListener("unmutedmic", (event) => {
   // document.querySelector('#microphonestatus').textContent = 'unmuted (on)'
   // document.querySelector('#microphonestatus').style.background = 'green'
   // document.querySelector('#microphonestatuscell').style.background = 'green'
-  document.getElementById('cake-holder').style.opacity=1
-  console.log('%cMICROPHONE UNMUTED', 'color:green')
-  console.log(' ')
-
-})
-
+  document.getElementById("cake-holder").style.opacity = 1;
+  console.log("%cMICROPHONE UNMUTED", "color:green");
+  console.log(" ");
+});
 
 // showConfiguration()

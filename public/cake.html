@@ -306,7 +306,9 @@
       #cake-holder.done .flame {
         opacity: 0;
       }
-
+      .candle-blown #cake-holder.done .flame {
+  opacity: 0;
+}
       .text-center {
         text-align: center;
         margin-top: -100px;
@@ -455,5 +457,12 @@
     <script src="demoAudioRecorder.js"></script>
     <script src="demoAudioDetectionListeners.js"></script>
     <script src="demo.js"></script>
+    <script>
+      window.addEventListener("message", (event) => {
+        if (event.data === "showCake") {
+          document.querySelector("#cake-holder").classList.add("done");
+        }
+      });
+    </script>
   </body>
 </html>
