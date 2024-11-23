@@ -1,25 +1,24 @@
 :root {
   --primary: #df6565;
   --bg-color: rgb(227, 16, 185);
-  --bg-envelope-color: #475F79;
-  
-  
-  --envelope-tab: #8EBDF2;
-  --envelope-cover: #6384A9;
+  --bg-envelope-color: #85a9cf;
+
+  --envelope-tab: #7eb4f1;
+  --envelope-cover: #95b9e1;
   --shadow-color: rgba(0, 0, 0, 0.2);
   --txt-color: #444;
   --heart-color: rgb(247, 5, 5);
 }
 
 /* body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-} */
+    margin: 0;
+    padding: 0;
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  } */
 
 .container {
   display: grid;
@@ -71,7 +70,7 @@
   bottom: 0;
   width: 54%;
   height: 100%;
-  background-image: url("../../../public/assets/animation-bg.jpg");
+  background-image: url("../../../public/assets/book-bg.jpg");
   background-size: cover;
   background-repeat: no;
   text-align: center;

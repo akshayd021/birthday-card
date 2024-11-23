@@ -9,30 +9,34 @@ import { handleCandleBlow } from "./candleManager";
 const Book = ({ name, message }) => {
   const bookRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-
   const [isMicAccessGranted, setMicAccessGranted] = useState(false);
   const [error, setError] = useState("");
   const [isRequesting, setIsRequesting] = useState(false);
 
   const requestMicAccess = async () => {
     setIsRequesting(true);
-    setError(""); // Reset error on each request
+    setError(""); // Clear any previous errors
     try {
+      // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setMicAccessGranted(true);
-      setIsRequesting(false);
       console.log("Microphone access granted!");
-    } catch (err) {
+
+      // Stop the stream (optional, if you don't want to record audio immediately)
+      stream.getTracks().forEach((track) => track.stop());
+
       setIsRequesting(false);
-      setError("Microphone access denied or failed.");
+    } catch (err) {
+      // Handle errors (e.g., user denies access or browser issue)
       console.error("Error accessing microphone:", err);
+      setError("Microphone access denied or unavailable.");
+      setIsRequesting(false);
     }
   };
   useEffect(() => {
     const candleBlownStatus = sessionStorage.getItem("candleBlown");
 
     if (candleBlownStatus) {
-      // Apply styles directly to the flame element
       const flameElement = document.querySelector("#cake-holder.done .flame");
       if (flameElement) {
         flameElement.style.opacity = 0;
@@ -53,19 +57,6 @@ const Book = ({ name, message }) => {
   }, []);
 
   const [currentPage, setCurrentPage] = useState(0);
-
-  const handleNextPage = () => {
-    if (bookRef.current) {
-      bookRef.current.pageFlip().flipNext();
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (bookRef.current) {
-      bookRef.current.pageFlip().flipPrev();
-    }
-  };
-
   const handleFlip = (e) => {
     setCurrentPage(e.data);
   };
@@ -94,8 +85,8 @@ const Book = ({ name, message }) => {
       <ConfettiContainer />
       <HTMLFlipBook
         ref={bookRef}
-        width={isMobile ? 300 : 600}
-        height={isMobile ? 450 : 800}
+        width={isMobile ? 300 : 550}
+        height={isMobile ? 450 : 700}
         size="fixed"
         minWidth={300}
         maxWidth={800}
@@ -109,7 +100,6 @@ const Book = ({ name, message }) => {
         onFlip={handleFlip}
       >
         <div className="page">
-          {/* first Page */}
           <div className=" py-2 px-10 mt-14  lg:mt-0 flex flex-col lg:justify-center  text-center items-center min-h-full">
             <h2 className="text-center lg:text-[43px] text-[32px] font-bold leading-[50px] capitalize">
               Happy birthday
@@ -122,14 +112,8 @@ const Book = ({ name, message }) => {
             </button>
           </div>
         </div>
+
         <div className="page">
-          {/* second page */}
-          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
-            {message}
-          </p>
-        </div>
-        <div className="page">
-          {/* third page */}
           <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center font-pontano">
             Blow!
           </h2>
@@ -139,7 +123,7 @@ const Book = ({ name, message }) => {
             title="Cake Animation"
             style={{
               width: isMobile ? "90%" : "100%",
-              height: isMobile ? "400px" : "500px",
+              height: isMobile ? "350px" : "400px",
               border: "none",
             }}
           />
@@ -153,25 +137,20 @@ const Book = ({ name, message }) => {
             onClick={requestMicAccess}
             className="mx-auto flex items-center bg-[#4a4a4a] opacity-70 py-2 px-6 rounded-md text-white gap-2 lg:text-xl text-sm capitalize font-semibold"
           >
-            <FaMicrophone className="text-2xl" /> Allow access to mic
+            <FaMicrophone className="text-2xl" /> 
+            {isRequesting ? "Requesting..." : "Allow access to mic"}
           </button>
-
-          {isRequesting && (
-            <p className="mt-4 text-blue-500">
-              Requesting microphone access...
-            </p>
-          )}
-
           {isMicAccessGranted && (
-            <p className="mt-4 text-green-500">Microphone access granted!</p>
-          )}
-
-          {error && <p className="mt-4 text-red-500">{error}</p>}
+        <p className="text-green-500 text-sm">Microphone access granted!</p>
+      )}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
         <div className="page">
-          {/* fourth  */}
-          Back Cover
+          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
+            {message}
+          </p>
         </div>
+        <div className="page">Back Cover</div>
       </HTMLFlipBook>
     </div>
   );

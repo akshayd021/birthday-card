@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Book from "../book/Book";
+import Loader from "../../shared/Loader";
 
 const User = () => {
   const { id } = useParams(); // Extract ID from the route
@@ -25,9 +26,6 @@ const User = () => {
     fetchUser();
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (!user) {
     return <div>User not found.</div>;
@@ -35,7 +33,8 @@ const User = () => {
 
   return (
     <div>
-      <Book age={user?.age} message={user.message} name={user.name} />
+      {loading && <Loader loading={loading} />}
+      <Book age={user?.age} message={user.message} name={user.name}  />
     </div>
   );
 };
