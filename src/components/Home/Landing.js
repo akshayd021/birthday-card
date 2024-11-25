@@ -34,8 +34,9 @@ const Landing = () => {
         .min(1, "Age must be at least 1 year")
         .max(120, "Age should not more than 120 year")
         .positive("Age must be a positive number"),
-      message: Yup.string().required("Message is required")
-      .max(520, "Message should not more than 520 characters"),
+      message: Yup.string()
+        .required("Message is required")
+        .max(520, "Message should not more than 520 characters"),
       customUrlPart: customUrlEnabled
         ? Yup.string().required("Custom URL part is required")
         : Yup.string().notRequired(),
