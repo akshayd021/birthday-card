@@ -22,12 +22,12 @@ const Book = ({ name, message }) => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setMicAccessGranted(true);
       toast.success("Microphone access granted!", {
-        theme: "dark", 
-        position: "top-right", 
-        autoClose: 3000, 
-        closeOnClick: true, 
-        pauseOnHover: true, 
-        draggable: true, 
+        theme: "dark",
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
       });
       console.log("Microphone access granted!");
 
@@ -38,13 +38,13 @@ const Book = ({ name, message }) => {
     } catch (err) {
       // Handle errors (e.g., user denies access or browser issue)
       console.error("Error accessing microphone:", err);
-         toast.error("Microphone access denied or unavailable.", {
-          theme: "dark", 
-          position: "top-right", 
-          autoClose: 3000, 
-          closeOnClick: true, 
-          pauseOnHover: true, 
-          draggable: true, 
+      toast.error("Microphone access denied or unavailable.", {
+        theme: "dark",
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
       });
       setIsRequesting(false);
     }
@@ -130,7 +130,7 @@ const Book = ({ name, message }) => {
         </div>
 
         <div className="page text-white">
-          <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center ">
+          <h2 className="lg:text-[70px] text-[40px] font-bold lg:mt-16 mt-1 text-center font-purplepurse ">
             Blow!
           </h2>
           <h2 className="lg:mt-3 mt-1 text-xl text-center">(For a surprise)</h2>
@@ -151,10 +151,15 @@ const Book = ({ name, message }) => {
           </button>
           <button
             onClick={requestMicAccess}
-            className="mx-auto flex items-center bg-[#4a4a4a] opacity-70 py-2 px-6 rounded-md text-white gap-2 lg:text-xl text-sm capitalize font-semibold"
+            disabled={isMicAccessGranted}
+            className="mx-auto flex items-center bg-[#4a4a4a] disabled:cursor-not-allowed opacity-70 py-2 px-6 rounded-md text-white gap-2 lg:text-xl text-sm capitalize font-semibold"
           >
             <FaMicrophone className="text-2xl" />
-            {isRequesting ? "Requesting..." : "Allow access to mic"}
+            {isRequesting
+              ? "Requesting..."
+              : !isMicAccessGranted
+              ? "Allow access to mic"
+              : "Mic Access"}
           </button>
           {/* {isMicAccessGranted && (
             <p className="text-green-500 text-sm">Microphone access granted!</p>
@@ -163,8 +168,7 @@ const Book = ({ name, message }) => {
         </div>
         <div className="page text-white">
           <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
-          {message?.length > 520 ? `${message.slice(0, 520)}...` : message}
-
+            {message?.length > 520 ? `${message.slice(0, 520)}...` : message}
           </p>
         </div>
         {/* <div className="page">Back Cover</div> */}

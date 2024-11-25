@@ -24,12 +24,18 @@ const Landing = () => {
       customUrlPart: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
+      name: Yup.string()
+        .min(3, "Name must be at least 3 characters")
+        .max(25, "Name must not More than 25 characters")
+        .required("Name is required"),
+
       age: Yup.number()
         .required("Age is required")
-        .positive("Age must be a positive number")
-        .integer("Age must be an integer"),
-      message: Yup.string().required("Message is required"),
+        .min(1, "Age must be at least 1 year")
+        .max(120, "Age should not more than 120 year")
+        .positive("Age must be a positive number"),
+      message: Yup.string().required("Message is required")
+      .max(520, "Message should not more than 520 characters"),
       customUrlPart: customUrlEnabled
         ? Yup.string().required("Custom URL part is required")
         : Yup.string().notRequired(),
@@ -162,7 +168,7 @@ const Landing = () => {
           />
         </div>
         <img
-          src="/assets/text.png"
+          src="/assets/Text.png"
           alt="text"
           className="lg:max-w-[75%] w-[70%] "
         />
