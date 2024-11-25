@@ -6,7 +6,8 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         pontano: ["Pontano Sans", "sans-serif"],
-        purplepurse: ["Purple Purse", "cursive"], 
+        purplepurse: ["Purple Purse", "cursive"],
+        dancingscript: ["Dancing Script", "cursive"], 
       },
       animation: {
         jump: "jump 2s ease-in-out infinite",

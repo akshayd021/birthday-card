@@ -30,13 +30,10 @@ const Book = ({ name, message }) => {
         draggable: true,
       });
       console.log("Microphone access granted!");
-
-      // Stop the stream (optional, if you don't want to record audio immediately)
       stream.getTracks().forEach((track) => track.stop());
 
       setIsRequesting(false);
     } catch (err) {
-      // Handle errors (e.g., user denies access or browser issue)
       console.error("Error accessing microphone:", err);
       toast.error("Microphone access denied or unavailable.", {
         theme: "dark",
@@ -161,17 +158,12 @@ const Book = ({ name, message }) => {
               ? "Allow access to mic"
               : "Mic Access"}
           </button>
-          {/* {isMicAccessGranted && (
-            <p className="text-green-500 text-sm">Microphone access granted!</p>
-          )} */}
-          {/* {error && <p className="text-red-500 text-sm">{error}</p>} */}
         </div>
         <div className="page text-white">
-          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-2xl animate-none">
-            {message?.length > 520 ? `${message.slice(0, 520)}...` : message}
+          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold text-[45px] font-dancingscript">
+            {message?.length > 270 ? `${message.slice(0, 270)}...` : message}
           </p>
         </div>
-        {/* <div className="page">Back Cover</div> */}
       </HTMLFlipBook>
     </div>
   );
