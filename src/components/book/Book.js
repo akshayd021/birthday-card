@@ -2,21 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import HTMLFlipBook from "react-pageflip";
 import "./book.css";
 import { HiOutlineCursorClick } from "react-icons/hi";
-import { FaMicrophone } from "react-icons/fa";
 import ConfettiContainer from "./ConfettiContainer";
-import { handleCandleBlow } from "./candleManager";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaArrowLeft } from "react-icons/fa";
 
 const Book = ({ name, message }) => {
   const bookRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMicAccessGranted, setMicAccessGranted] = useState(false);
-  const [candleBlown, setCandleBlown] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-
-  const [isRequesting, setIsRequesting] = useState(false);
 
   const handleCandleBlowAction = () => {
     localStorage.setItem("candleBlown", "true");
@@ -73,11 +65,9 @@ const Book = ({ name, message }) => {
       localStorage.clear();
     };
 
-    // Add the event listener for page reload
     window.addEventListener("beforeunload", clearLocalStorage);
 
     return () => {
-      // Clean up the event listener
       window.removeEventListener("beforeunload", clearLocalStorage);
     };
   }, []);
@@ -168,7 +158,7 @@ const Book = ({ name, message }) => {
         </div>
 
         <div className="page text-white">
-          <p className="birthday-greeting-page px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold lg:text-[45px] text-[28px] font-dancingscript">
+          <p className="birthday-greeting-page word px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold lg:text-[45px] text-[28px] font-dancingscript">
             {message?.length > 270 && !isMobile
               ? `${message.slice(0, 270)}...`
               : message?.length > 400 && isMobile

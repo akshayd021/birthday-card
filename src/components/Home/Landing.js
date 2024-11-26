@@ -7,6 +7,8 @@ import { FaRegUser } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineContentCopy } from "react-icons/md";
 import Loader from "../../shared/Loader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Landing = () => {
   const [customUrlEnabled, setCustomUrlEnabled] = useState(false);
@@ -79,6 +81,14 @@ const Landing = () => {
       } catch (error) {
         console.error("Error submitting form:", error);
         setLoading(false);
+        toast.error(error?.error || "Custom URL already taken", {
+          theme: "dark",
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     },
   });
@@ -104,7 +114,15 @@ const Landing = () => {
       textArea.select();
       try {
         document.execCommand("copy");
-        alert("URL copied to clipboard!");
+
+        toast.success("URL copied to clipboard!", {
+          theme: "dark",
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } catch (error) {
         console.error("Failed to copy text:", error);
       }

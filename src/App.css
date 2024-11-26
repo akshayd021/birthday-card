@@ -70,8 +70,10 @@ html {
   }
 }
 
-.birthday-greeting-page {
-  word-wrap: break-word; /* Ensures long words wrap */
-  overflow-wrap: break-word; /* Handles modern browsers */
-  white-space: normal; /* Resets any nowrap behavior */
+.word {
+  word-wrap: break-word !important; /* For legacy browsers */
+  overflow-wrap: break-word !important; /* Modern standard */
+  white-space: normal !important; /* Allow wrapping */
+  width: 100%; /* Ensure the container has a width limit */
+  overflow: hidden; /* Prevent horizontal scrolling */
 }

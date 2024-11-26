@@ -14,7 +14,7 @@ function ConfettiContainer({ handlePage }) {
         setCandleBlown(true);
         document
           .querySelector(".birthday-greeting-page")
-          .classList.replace("hidden", "flex");
+          .classList.replace("hidden", "block");
         setShowConfetti(true);
         handlePage();
       } else {
