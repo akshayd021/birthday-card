@@ -20,7 +20,6 @@ const Book = ({ name, message }) => {
 
   const handleCandleBlowAction = () => {
     localStorage.setItem("candleBlown", "true");
-    setCandleBlown(true);
   };
 
   const requestMicAccess = async () => {
@@ -56,14 +55,6 @@ const Book = ({ name, message }) => {
   };
 
   useEffect(() => {
-    const candleBlownStatus = localStorage.getItem("candleBlown");
-
-    if (candleBlownStatus) {
-      setCandleBlown(true);
-    }
-  }, []);
-
-  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -72,6 +63,20 @@ const Book = ({ name, message }) => {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const clearLocalStorage = () => {
+      localStorage.clear();
+    };
+
+    // Add the event listener for page reload
+    window.addEventListener("beforeunload", clearLocalStorage);
+
+    return () => {
+      // Clean up the event listener
+      window.removeEventListener("beforeunload", clearLocalStorage);
     };
   }, []);
 

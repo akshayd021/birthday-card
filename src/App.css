@@ -29,7 +29,6 @@ html {
   }
 }
 
-
 .flap-open {
   animation: flapOpen 0.7s ease forwards;
 }
@@ -71,4 +70,8 @@ html {
   }
 }
 
-
+.birthday-greeting-page {
+  word-wrap: break-word; /* Ensures long words wrap */
+  overflow-wrap: break-word; /* Handles modern browsers */
+  white-space: normal; /* Resets any nowrap behavior */
+}
