@@ -55,6 +55,11 @@ const Book = ({ name, message }) => {
   };
 
   useEffect(() => {
+    // Call the function only once when the component is mounted
+    requestMicAccess();
+  }, []); // Empty dependency array ensures this runs only once
+
+  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -148,7 +153,7 @@ const Book = ({ name, message }) => {
             >
               Skip
             </button>
-            {!isMobile && (
+            {/* {!isMobile && (
               <button
                 onClick={requestMicAccess}
                 disabled={isMicAccessGranted}
@@ -161,7 +166,7 @@ const Book = ({ name, message }) => {
                   ? "Allow access to mic"
                   : "Mic Access"}
               </button>
-            )}
+            )} */}
           </div>
         </div>
 
