@@ -157,7 +157,7 @@
       }
 
       .candle {
-        background-color: #4B62BF;
+        background-color: #4b62bf;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -167,7 +167,7 @@
         z-index: 10;
       }
       .candle6 {
-        background-color: #B53D71;
+        background-color: #b53d71;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -177,7 +177,7 @@
         z-index: 10;
       }
       .candle1 {
-        background-color: #D16042;
+        background-color: #d16042;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -187,7 +187,7 @@
         z-index: 10;
       }
       .candle2 {
-        background-color: #28956E;
+        background-color: #28956e;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -197,7 +197,7 @@
         z-index: 10;
       }
       .candle3 {
-        background-color: #E0B336;
+        background-color: #e0b336;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -207,7 +207,7 @@
         z-index: 10;
       }
       .candle5 {
-        background-color: #9A5085;
+        background-color: #9a5085;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -217,8 +217,7 @@
         z-index: 10;
       }
       .candle4 {
-        background-color: #3F97BB
-        ;
+        background-color: #3f97bb;
         width: 16px;
         height: 50px;
         border-radius: 8px / 4px;
@@ -236,7 +235,7 @@
         width: 16px;
         height: 8px;
         border-radius: 50%;
-        background-color: #4B62BF;
+        background-color: #4b62bf;
       }
 
       .flame {
@@ -308,99 +307,99 @@
         opacity: 0;
       }
       .candle-blown #cake-holder.done .flame {
-  opacity: 0;
-}
+        opacity: 0;
+      }
       .text-center {
         text-align: center;
         margin-top: -100px;
       }
 
-@media (min-width: 320px) and (max-width: 600px) { 
+      @media only screen and (max-width: 500px) {
+        .mobile .cake {
+          width: 180px;
+          height: 150px;
+          margin-top: -60px;
+          margin-left: -35%;
+        }
 
-        .cake {
-          width: 150px; 
-           height: 120px;
-          margin-top: -50px;
-          margin-left: -75px;
-        } 
-
-.plate {
-          width: 170px;
-          height: 80px;
+        .mobile .plate {
+          width: 200px;
+          height: 100px;
           bottom: -5px;
           left: -5px;
         }
 
-        .layer {
-          width: 150px;
+        .mobile .layer {
+          width: 180px;
+          height: 70px;
+        }
+
+        .mobile .layer-middle {
+          top: 25px;
+        }
+
+        .mobile .layer-bottom {
+          top: 50px;
+        }
+
+        .mobile .icing {
+          width: 170px;
           height: 60px;
-        }
-
-        .layer-middle {
-          top: 20px;
-        }
-
-        .layer-bottom {
-          top: 40px;
-        }
-
-        .icing {
-          width: 140px;
-          height: 50px;
           left: 5px;
-          top: 1px;
+          top: 2px;
         }
 
-        .drip {
-          width: 30px;
+        .mobile .drip {
+          width: 35px;
+          height: 50px;
+        }
+
+        .mobile .drip1 {
+          top: 35px;
+          left: 4px;
+        }
+
+        .mobile .drip2 {
+          top: 45px;
+          left: 130px;
+        }
+
+        .mobile .drip3 {
+          top: 36px;
+          left: 60px;
+          width: 60px;
+        }
+
+        .mobile .candle {
+          width: 12px;
           height: 40px;
+          top: -15px;
+          margin-left: -6px;
         }
 
-        .drip1 {
-          top: 30px;
-          left: 3px;
+        .mobile .candle1,
+        .mobile .candle2,
+        .mobile .candle3,
+        .mobile .candle4,
+        .mobile .candle5,
+        .mobile .candle6 {
+          width: 12px;
+          height: 40px;
+          top: -15px;
+          margin-left: -6px;
         }
 
-        .drip2 {
-          top: 39px;
-          left: 110px;
+        .mobile .candle:before {
+          width: 2px;
         }
 
-        .drip3 {
-          top: 31px;
-          left: 50px;
-          width: 50px;
-        }
-
-        .candle {
+        .mobile .flame {
           width: 10px;
-          height: 30px;
-          top: -10px;
+          height: 25px;
+          top: -25px;
           margin-left: -5px;
         }
-        .candle1,
-        .candle2,
-        .candle3,
-        .candle4,
-        .candle5,
-        .candle6 {
-          width: 10px;
-          height: 30px;
-          top: -10px;
-          margin-left: -5px;
-        }
-        .candle:before {
-          width: 1px;
-        }
-
-        .flame {
-          width: 8px;
-          height: 20px;
-          top: -20px;
-          margin-left: -4px;
-        } 
       }
-
     </style>
   </head>
   <body>
@@ -413,43 +412,46 @@
     </button>
     <br />
     <br />
-    <div id="cake-holder" style="opacity: 0">
-      <div class="cake">
-        <div class="plate"></div>
-        <div class="layer layer-bottom"></div>
-        <div class="layer layer-middle"></div>
-        <div class="layer layer-top"></div>
-        <div class="icing"></div>
-        <div class="drip drip1"></div>
-        <div class="drip drip2"></div>
-        <div class="drip drip3"></div>
-        <div class="candle">
-          <div class="flame"></div>
+    <div class="mobile">
+      <div id="cake-holder" style="opacity: 0">
+        <div class="cake">
+          <div class="plate"></div>
+          <div class="layer layer-bottom"></div>
+          <div class="layer layer-middle"></div>
+          <div class="layer layer-top"></div>
+          <div class="icing"></div>
+          <div class="drip drip1"></div>
+          <div class="drip drip2"></div>
+          <div class="drip drip3"></div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+          <div class="candle1">
+            <div class="flame"></div>
+          </div>
+          <div class="candle2">
+            <div class="flame"></div>
+          </div>
+          <div class="candle3">
+            <div class="flame"></div>
+          </div>
+          <div class="candle4">
+            <div class="flame"></div>
+          </div>
+          <div class="candle5">
+            <div class="flame"></div>
+          </div>
+          <div class="candle6">
+            <div class="flame"></div>
+          </div>
         </div>
-        <div class="candle1">
-          <div class="flame"></div>
-        </div>
-        <div class="candle2">
-          <div class="flame"></div>
-        </div>
-        <div class="candle3">
-          <div class="flame"></div>
-        </div>
-        <div class="candle4">
-          <div class="flame"></div>
-        </div>
-        <div class="candle5">
-          <div class="flame"></div>
-        </div>
-        <div class="candle6">
-          <div class="flame"></div>
-        </div>
-      </div>
-      <!-- <div class="text-center">
+        <!-- <div class="text-center">
         <h5 class="cake-off">❣ Happy Birthday Dude ❣</h5>
         <p class="cake-off">❤ Wish you best ❤</p>
       </div> -->
+      </div>
     </div>
+
     <script src="cake.js"></script>
     <script src="volume-meter.js"></script>
     <script src="audioDetectionConfig.js"></script>

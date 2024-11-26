@@ -22,42 +22,39 @@ const Book = ({ name, message }) => {
     localStorage.setItem("candleBlown", "true");
   };
 
-  const requestMicAccess = async () => {
-    setIsRequesting(true);
+  // const requestMicAccess = async () => {
+  //   setIsRequesting(true);
 
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setMicAccessGranted(true);
-      toast.success("Microphone access granted!", {
-        theme: "dark",
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     setMicAccessGranted(true);
+  //     toast.success("Microphone access granted!", {
+  //       theme: "dark",
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //     });
 
-      stream.getTracks().forEach((track) => track.stop());
+  //     stream.getTracks().forEach((track) => track.stop());
 
-      setIsRequesting(false);
-    } catch (err) {
-      console.error("Error accessing microphone:", err);
-      toast.error("Microphone access denied or unavailable.", {
-        theme: "dark",
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setIsRequesting(false);
-    }
-  };
+  //     setIsRequesting(false);
+  //   } catch (err) {
+  //     console.error("Error accessing microphone:", err);
+  //     toast.error("Microphone access denied or unavailable.", {
+  //       theme: "dark",
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //     });
+  //     setIsRequesting(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    // Call the function only once when the component is mounted
-    requestMicAccess();
-  }, []); // Empty dependency array ensures this runs only once
+  // Empty dependency array ensures this runs only once
 
   useEffect(() => {
     const handleResize = () => {
