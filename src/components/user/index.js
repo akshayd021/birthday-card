@@ -30,7 +30,7 @@ const User = () => {
     <div className="relative">
       {loading && <Loader loading={loading} />}
       <div
-        className="bg-center bg-no-repeat bg-opacity-50 bg-cover min-h-screen opacity-80"
+        className="bg-center bg-no-repeat bg-opacity-50 bg-cover min-h-screen opacity-80 "
         style={{ backgroundImage: "url(/assets/main.jpg)" }}
       >
         {user && (
