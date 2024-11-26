@@ -13,7 +13,7 @@ const Envelope = ({ name }) => {
 
     const closeTimeout = setTimeout(() => {
       setIsOpen(false);
-    }, 5000);
+    }, 4000);
 
     return () => {
       clearTimeout(openTimeout);

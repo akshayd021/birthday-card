@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -15,7 +15,13 @@ const Landing = () => {
   const [animation, setAnimation] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseCustomUrl = "https://birthday-cake-sigma.vercel.app/user/";
-
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag("event", "page_view", {
+        page_path: window.location.pathname,
+      });
+    }
+  }, []);
   const formik = useFormik({
     initialValues: {
       name: "",

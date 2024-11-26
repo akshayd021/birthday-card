@@ -7,7 +7,7 @@ export function handleCandleBlow() {
     alert("Candle is already blown!");
     flameElements.forEach((flame) => {
       if (flame) {
-        flame.style.opacity = 0; // Update opacity for all flames
+        flame.style.opacity = 0; 
       }
     });
   } else {
@@ -15,7 +15,7 @@ export function handleCandleBlow() {
     alert("Candle blown!");
     flameElements.forEach((flame) => {
       if (flame) {
-        flame.style.opacity = 0; // Update opacity for the first blow
+        flame.style.opacity = 0; 
       }
     });
   }

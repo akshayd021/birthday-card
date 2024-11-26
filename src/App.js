@@ -3,7 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Landing, User } from "./components";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactGa from "react-ga";
+import addGoogleAnalytics from "./utils/addGoogleAnalytics";
+
 function App() {
+  ReactGa.initialize("G-V84D12J6NT");
+  addGoogleAnalytics();
+
   return (
     <Router>
       <ToastContainer />
@@ -11,8 +17,19 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/user/:id" element={<User />} />
       </Routes>
+      
     </Router>
   );
+  // //<!-- Google tag (gtag.js) -->
+  // <!-- Google tag (gtag.js) -->
+  // <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNERFX4EX4"></script>
+  // <script>
+  //   window.dataLayer = window.dataLayer || [];
+  //   function gtag(){dataLayer.push(arguments);}
+  //   gtag('js', new Date());
+  
+  //   gtag('config', 'G-PNERFX4EX4');
+  // </script>
 }
 
 export default App;

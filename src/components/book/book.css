@@ -20,9 +20,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .flipbook-container {
-    padding: 10px;
-  }
 
   .page {
     font-size: 18px;
