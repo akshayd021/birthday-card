@@ -8,21 +8,31 @@
 
 .page {
   display: flex;
-  justify-content: center;
+  justify-content: center important;
   align-items: center;
-  width: 100%;
-  height: 100%;
+width: 100%;
+  height: 100% ;
   border: 1px solid #ddd;
   font-size: 24px;
   background-image: url("../../../public/assets/book-bg.png");
   background-position: center;
+  box-sizing: border-box;
+  padding: 20px;
   background-size: cover;
 }
 
-@media screen and (max-width: 768px) {
 
-  .page {
-    font-size: 18px;
-    padding: 15px;
+@media (max-width: 768px) {
+  .flipbook-container {
+    width: 90%;
+    height: 80%; /* Smaller height on smaller screens */
+  }
+
+  iframe {
+    width: 90%; /* Match flipbook container width */
+    height: 350px;
   }
 }
+
+
+

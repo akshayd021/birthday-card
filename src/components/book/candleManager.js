@@ -1,6 +1,6 @@
 // candleManager.js
 export function handleCandleBlow() {
-  const candleBlown = sessionStorage.getItem("candleBlown");
+  const candleBlown = localStorage.getItem("candleBlown");
   const flameElements = document.querySelectorAll(".cake-holder.done .flame"); 
 
   if (candleBlown === "true") {
@@ -11,7 +11,7 @@ export function handleCandleBlow() {
       }
     });
   } else {
-    sessionStorage.setItem("candleBlown", "true");
+    localStorage.setItem("candleBlown", "true");
     alert("Candle blown!");
     flameElements.forEach((flame) => {
       if (flame) {

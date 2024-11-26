@@ -9,7 +9,7 @@ function ConfettiContainer({ handlePage }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (sessionStorage.getItem("candleBlown")) {
+      if (localStorage.getItem("candleBlown")) {
         clearInterval(interval);
         setCandleBlown(true);
         document
@@ -24,7 +24,7 @@ function ConfettiContainer({ handlePage }) {
 
     return () => {
       clearInterval(interval);
-      sessionStorage.removeItem("candleBlown");
+      localStorage.removeItem("candleBlown");
     };
   }, []);
 

@@ -1,4 +1,3 @@
-
 // Envelope.js
 import React, { useState, useEffect } from "react";
 import "./index.css";
@@ -27,8 +26,12 @@ const Envelope = ({ name }) => {
         <div className="envelope">
           <div className="letter">
             <div className="text text-white">
-              <p className="text-center text-xl font-bold text-white">Happy Birthday</p>
-              <p className="text-center text-xl font-bold text-white">{name || ""}</p>
+              <p className="text-center text-xl font-bold text-white">
+                Happy Birthday
+              </p>
+              <p className="text-center text-xl font-bold text-white">
+                {name || ""}
+              </p>
             </div>
           </div>
         </div>
