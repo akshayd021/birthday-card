@@ -4,11 +4,13 @@ import { Landing, User } from "./components";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactGa from "react-ga";
-import addGoogleAnalytics from "./utils/addGoogleAnalytics";
+import { initializeGA } from "./utils/addGoogleAnalytics";
+import { useEffect } from "react";
 
 function App() {
-  ReactGa.initialize("G-V84D12J6NT");
-  addGoogleAnalytics();
+  useEffect(() => {
+    initializeGA();
+  }, []);
 
   return (
     <Router>
@@ -17,7 +19,6 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/user/:id" element={<User />} />
       </Routes>
-      
     </Router>
   );
   // //<!-- Google tag (gtag.js) -->
@@ -27,7 +28,7 @@ function App() {
   //   window.dataLayer = window.dataLayer || [];
   //   function gtag(){dataLayer.push(arguments);}
   //   gtag('js', new Date());
-  
+
   //   gtag('config', 'G-PNERFX4EX4');
   // </script>
 }

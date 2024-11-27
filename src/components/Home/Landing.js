@@ -9,6 +9,8 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import Loader from "../../shared/Loader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
+import { logPageView } from "../../utils/addGoogleAnalytics";
 
 const Landing = () => {
   const [customUrlEnabled, setCustomUrlEnabled] = useState(false);
@@ -17,13 +19,12 @@ const Landing = () => {
   const [animation, setAnimation] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseCustomUrl = "https://birthday-cake-sigma.vercel.app/user/";
+  const location = useLocation();
+
   useEffect(() => {
-    if (window.gtag) {
-      window.gtag("event", "page_view", {
-        page_path: window.location.pathname,
-      });
-    }
-  }, []);
+    logPageView(location.pathname);
+  }, [location]);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -36,7 +37,6 @@ const Landing = () => {
         .min(3, "Name must be at least 3 characters")
         .max(25, "Name must not More than 25 characters")
         .required("Name is required"),
-
       age: Yup.number()
         .required("Age is required")
         .min(1, "Age must be at least 1 year")
@@ -51,6 +51,14 @@ const Landing = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        if (window.gtag) {
+          window.gtag("event", "submit_button_click", {
+            event_category: "Form",
+            event_label: "User Submission",
+            value: 1,
+          });
+        }
+
         setLoading(true);
         const requestData = {
           ...values,
