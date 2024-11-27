@@ -29,7 +29,7 @@ const Envelope = ({ name }) => {
               <p className="text-center text-xl font-bold text-white">
                 Happy Birthday
               </p>
-              <p className="text-center text-xl font-bold text-white">
+              <p className="text-center text-xl font-bold text-white word ">
                 {name || ""}
               </p>
             </div>

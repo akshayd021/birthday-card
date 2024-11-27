@@ -105,7 +105,7 @@ const Book = ({ name, message }) => {
             <div className="text-center lg:text-[56px] text-[32px]   font-bold leading-[50px] capitalize font-purplepurse">
               Happy birthday
             </div>
-            <h2 className="text-center lg:text-[55px] text-[42px] lg:mt-8 font-bold leading-[65px] capitalize">
+            <h2 className="text-center lg:text-[55px] text-[42px] lg:mt-8 font-bold leading-[65px] capitalize word">
               {name}
             </h2>
           </div>
