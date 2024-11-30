@@ -158,7 +158,16 @@ const Book = ({ name, message }) => {
         </div>
 
         <div className="page text-white">
-          <p className="birthday-greeting-page word px-5 hidden justify-center m-auto items-center text-center min-h-full font-semibold lg:text-[45px] text-[28px] font-dancingscript">
+          <p
+            className="birthday-greeting-page word px-5 hidden m-auto text-center font-semibold lg:text-[45px] text-[28px] font-dancingscript"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+            }}
+          >
             {message?.length > 270 && !isMobile
               ? `${message.slice(0, 270)}...`
               : message?.length > 400 && isMobile
