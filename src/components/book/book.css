@@ -8,7 +8,7 @@
 
 .page {
   display: flex;
-  justify-content: center important;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -21,14 +21,181 @@
   background-size: cover;
 }
 
+/* Cake styles */
+.cake-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cake {
+  position: absolute;
+  width: 250px;
+  height: 200px;
+  top: 52%;
+  left: 50%;
+  margin-top: -70px;
+  margin-left: -125px;
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.plate {
+  width: 270px;
+  height: 110px;
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  box-shadow: 0 2px 0 #b3b3b3, 0 4px 0 #b3b3b3, 0 5px 40px rgba(0, 0, 0, 0.5);
+}
+
+.layer {
+  position: absolute;
+  display: block;
+  width: 250px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ab5050;
+  box-shadow: 0 2px 0px #6a4b18, 0 4px 0px #b87300, 0 6px 0px #74644b,
+    0 8px 0px #6a4b18, 0 10px 0px #ffdca1, 0 12px 0px #ff55ab,
+    0 14px 0px #2f210a, 0 16px 0px #2e200a, 0 18px 0px #2d200a,
+    0 20px 0px #2c1f0a, 0 22px 0px #2b1f0a, 0 24px 0px #2a1e09,
+    0 26px 0px #2a1d09, 0 28px 0px #291d09, 0 30px 0px #281c09;
+}
+
+.layer-top { top: 0px; }
+.layer-middle { top: 33px; }
+.layer-bottom { top: 66px; }
+
+.icing {
+  top: 2px;
+  left: 5px;
+  background-color: #f0e4d0;
+  width: 240px;
+  height: 90px;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.icing:before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  bottom: 6px;
+  left: 5px;
+  background-color: #f4ebdc;
+  box-shadow: 0 0 4px #f6efe3, 0 0 4px #f6efe3, 0 0 4px #f6efe3;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.drip {
+  display: block;
+  width: 50px;
+  height: 60px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #f0e4d0;
+  position: absolute;
+}
+
+.drip1 {
+  top: 53px;
+  left: 5px;
+  transform: skewY(15deg);
+  height: 48px;
+  width: 40px;
+}
+
+.drip2 {
+  top: 69px;
+  left: 181px;
+  transform: skewY(-15deg);
+}
+
+.drip3 {
+  top: 54px;
+  left: 90px;
+  width: 80px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+/* Candles */
+.candle, .candle1, .candle2, .candle3, .candle4, .candle5, .candle6 {
+  width: 16px;
+  height: 50px;
+  border-radius: 8px / 4px;
+  top: -20px;
+  margin-left: -8px;
+  z-index: 10;
+  position: absolute;
+}
+
+.candle { background-color: #4b62bf; left: 50%; }
+.candle1 { background-color: #d16042; left: 70%; }
+.candle2 { background-color: #28956e; left: 80%; }
+.candle3 { background-color: #e0b336; left: 30%; }
+.candle4 { background-color: #3f97bb; left: 60%; }
+.candle5 { background-color: #9a5085; left: 40%; }
+.candle6 { background-color: #b53d71; left: 20%; }
+
+.flame {
+  position: absolute;
+  background-color: orange;
+  width: 15px;
+  height: 35px;
+  border-radius: 10px 10px 10px 10px / 25px 25px 10px 10px;
+  top: -34px;
+  left: 50%;
+  margin-left: -7.5px;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.5),
+    0 0 20px rgba(255, 165, 0, 0.5),
+    0 0 60px rgba(255, 165, 0, 0.5),
+    0 0 80px rgba(255, 165, 0, 0.5);
+  transform-origin: 50% 90%;
+  animation: flicker 1s ease-in-out alternate infinite;
+}
+
+/* Animation for flames */
+@keyframes flicker {
+  0% { transform: skewX(5deg); }
+  25% { transform: skewX(-5deg); }
+  50% { transform: skewX(10deg); }
+  75% { transform: skewX(-10deg); }
+  100% { transform: skewX(5deg); }
+}
+
+/* Candle blown state */
+.candle-blown .flame {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+#cake-holder.done .flame {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .flipbook-container {
-    width: 90%;
-    height: 80%; /* Smaller height on smaller screens */
+  .cake-container {
+    height: 350px;
   }
 
-  iframe {
-    width: 90%; /* Match flipbook container width */
-    height: 350px;
+  .cake {
+    transform: scale(0.8);
+  }
+
+  .flipbook-container {
+    width: 90%;
+    height: 80%;
   }
 }

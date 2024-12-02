@@ -5,48 +5,105 @@ import { HiOutlineCursorClick } from "react-icons/hi";
 import ConfettiContainer from "./ConfettiContainer";
 import "react-toastify/dist/ReactToastify.css";
 
+const Cake = ({ isBlown, isMobile }) => (
+  <div className={`mobile ${isBlown ? 'candle-blown' : ''}`}>
+    <div id="cake-holder" className={isBlown ? 'done' : ''}>
+      <div className="cake">
+        <div className="plate"></div>
+        <div className="layer layer-bottom"></div>
+        <div className="layer layer-middle"></div>
+        <div className="layer layer-top"></div>
+        <div className="icing"></div>
+        <div className="drip drip1"></div>
+        <div className="drip drip2"></div>
+        <div className="drip drip3"></div>
+        {[1, 2, 3, 4, 5, 6].map((num) => (
+          <div key={num} className={`candle${num}`}>
+            <div className="flame"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 const Book = ({ name, message }) => {
   const bookRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [micStream, setMicStream] = useState(null);
+  const [candlesBlown, setCandlesBlown] = useState(false);
+  const [audioContext, setAudioContext] = useState(null);
+  const [audioProcessor, setAudioProcessor] = useState(null);
+
+  // Audio processing setup
+  useEffect(() => {
+    const setupAudio = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            autoGainControl: false,
+            noiseSuppression: false,
+            channelCount: 1
+          }
+        });
+
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        const source = context.createMediaStreamSource(stream);
+        const processor = context.createScriptProcessor(512, 1, 1);
+
+        processor.onaudioprocess = (e) => {
+          const input = e.inputBuffer.getChannelData(0);
+          const sum = input.reduce((acc, val) => acc + (val * val), 0);
+          const rms = Math.sqrt(sum / input.length);
+          const dB = -20 * Math.log10(1 / rms);
+
+          // Check if blow is detected
+          if (dB >= -20) {
+            console.log('Blow detected:', dB);
+            if (!candlesBlown) {
+              setCandlesBlown(true);
+              handleCandleBlowAction();
+            }
+          }
+        };
+
+        source.connect(processor);
+        processor.connect(context.destination);
+
+        setMicStream(stream);
+        setAudioContext(context);
+        setAudioProcessor(processor);
+
+        console.log("Audio processing initialized");
+      } catch (err) {
+        console.error("Error accessing microphone:", err);
+      }
+    };
+
+    setupAudio();
+
+    return () => {
+      if (audioContext) {
+        audioContext.close();
+      }
+      if (micStream) {
+        micStream.getTracks().forEach(track => track.stop());
+      }
+      if (audioProcessor) {
+        audioProcessor.disconnect();
+      }
+    };
+  }, []);
 
   const handleCandleBlowAction = () => {
     localStorage.setItem("candleBlown", "true");
+    // Wait a moment for the animation to complete before flipping the page
+    setTimeout(() => {
+      bookRef.current?.pageFlip().flipNext();
+    }, 1000);
   };
-
-  // const requestMicAccess = async () => {
-  //   setIsRequesting(true);
-
-  //   try {
-  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //     setMicAccessGranted(true);
-  //     toast.success("Microphone access granted!", {
-  //       theme: "dark",
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //     });
-
-  //     stream.getTracks().forEach((track) => track.stop());
-
-  //     setIsRequesting(false);
-  //   } catch (err) {
-  //     console.error("Error accessing microphone:", err);
-  //     toast.error("Microphone access denied or unavailable.", {
-  //       theme: "dark",
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //     });
-  //     setIsRequesting(false);
-  //   }
-  // };
-
-  // Empty dependency array ensures this runs only once
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,6 +136,7 @@ const Book = ({ name, message }) => {
   const handlePage = () => {
     bookRef.current.pageFlip().flipNext();
   };
+
   return (
     <div className="flipbook-container">
       <ConfettiContainer handlePage={handlePage} />
@@ -100,9 +158,9 @@ const Book = ({ name, message }) => {
         onFlip={handleFlip}
         className="p-5"
       >
-        <div className="page text-white ">
-          <div className="flex flex-col justify-center items-center min-h-full ">
-            <div className="text-center lg:text-[56px] text-[32px]   font-bold leading-[50px] capitalize font-purplepurse">
+        <div className="page text-white">
+          <div className="flex flex-col justify-center items-center min-h-full">
+            <div className="text-center lg:text-[56px] text-[32px] font-bold leading-[50px] capitalize font-purplepurse">
               Happy birthday
             </div>
             <h2 className="text-center lg:text-[55px] text-[42px] lg:mt-8 font-bold leading-[65px] capitalize">
@@ -117,43 +175,23 @@ const Book = ({ name, message }) => {
           </button>
         </div>
 
-        <div className="page text-white ">
-          <div className="flex flex-col justify-center items-center min-h-full ">
-            <h2 className="lg:text-[70px] text-[40px] font-bold  text-center font-purplepurse ">
+        <div className="page text-white">
+          <div className="flex flex-col justify-center items-center min-h-full">
+            <h2 className="lg:text-[70px] text-[40px] font-bold text-center font-purplepurse">
               Blow!
             </h2>
             <h2 className="lg:mt-3 mt-1 text-xl text-center">
               (For a surprise)
             </h2>
-            <iframe
-              src="/cake.html"
-              title="Cake Animation"
-              style={{
-                width: isMobile ? "90%" : "100%",
-                height: isMobile ? "350px" : "400px",
-                border: "none",
-              }}
-            />
+            <div className="cake-container">
+              <Cake isBlown={candlesBlown} isMobile={isMobile} />
+            </div>
             <button
               className="absolute right-6 top-4 inline-flex underline items-center gap-2 lg:text-xl text-lg font-semibold"
-              onClick={handleCandleBlowAction} // Trigger page flip when blown
+              onClick={handleCandleBlowAction}
             >
               Skip
             </button>
-            {/* {!isMobile && (
-              <button
-                onClick={requestMicAccess}
-                disabled={isMicAccessGranted}
-                className="mx-auto flex items-center bg-[#4a4a4a] disabled:cursor-not-allowed opacity-70 py-2 px-6 rounded-md text-white gap-2 lg:text-xl text-sm capitalize font-semibold"
-              >
-                <FaMicrophone className="text-2xl" />
-                {isRequesting
-                  ? "Requesting..."
-                  : !isMicAccessGranted
-                  ? "Allow access to mic"
-                  : "Mic Access"}
-              </button>
-            )} */}
           </div>
         </div>
 

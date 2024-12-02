@@ -1,32 +1,34 @@
 /* eslint-env browser */
 
 const dB = (signal) => -Math.round(20 * Math.log10(1 / signal));
+const debuglog = true; // Enable debugging by default to help troubleshoot
 
-/**
- * speechDetectionListeners
- *
- */
+function showCake() {
+  console.log("Attempting to show cake and blow candles");
+  const cakeHolder = document.getElementById("cake-holder");
+  if (cakeHolder) {
+    cakeHolder.classList.add("done");
+    document.body.classList.add('candle-blown');
+    // Notify parent that candles are blown
+    window.parent.postMessage({ type: 'CANDLES_BLOWN' }, '*');
+    console.log("Cake animation triggered");
+  } else {
+    console.error("Cake holder element not found");
+  }
+}
 
 function hystogramLine(value) {
   const maxCharsperLine = 200;
   const valueInChars = maxCharsperLine * value;
   const char = "█";
-
   return char.repeat(valueInChars);
 }
 
-function showConfiguration() {
-  // document.querySelector('#SAMPLE_POLLING_MSECS').textContent = SAMPLE_POLLING_MSECS
-  // document.querySelector('#MAX_INTERSPEECH_SILENCE_MSECS').textContent = MAX_INTERSPEECH_SILENCE_MSECS
-  // document.querySelector('#MIN_SIGNAL_DURATION').textContent = MIN_SIGNAL_DURATION
-  // document.querySelector('#VOLUME_SIGNAL').textContent = VOLUME_SIGNAL
-  // document.querySelector('#VOLUME_SILENCE').textContent = VOLUME_SILENCE
-  // document.querySelector('#VOLUME_MUTE').textContent = VOLUME_MUTE
-  // document.querySelector('#MIN_AVERAGE_SIGNAL_VOLUME').textContent = MIN_AVERAGE_SIGNAL_VOLUME
-}
+// Audio detection thresholds
+const VOLUME_THRESHOLD = -20; // Adjusted threshold for blowing detection
 
 //
-// signal handler
+// signal handler - This is the main handler for detecting blowing
 //
 document.addEventListener("signal", (event) => {
   const volume = event.detail.volume.toFixed(9);
@@ -34,24 +36,15 @@ document.addEventListener("signal", (event) => {
   const items = event.detail.items.toString().padEnd(3);
   const dBV = dB(event.detail.volume);
 
-  const line = hystogramLine(volume);
-  console.log("dbV", dBV);
-  if (dBV >= -17) {
-    console.log("Happy Birth Day");
+  // Log all audio input for debugging
+  console.log("Audio input detected - dBV:", dBV, "volume:", volume);
+
+  // Check if the volume is loud enough to trigger candle blowing
+  if (dBV >= VOLUME_THRESHOLD) {
+    console.log("Blow detected! dBV:", dBV);
     showCake();
     localStorage.setItem("candleBlown", "true");
   }
-  if (debuglog)
-    console.log(`signal  ${timestamp} ${items} ${volume} ${dBV} ${line}`);
-
-  // document.querySelector('#audiostatuscell').style.background = 'green'
-  // document.querySelector('#audiostatuscell').style.color = 'black'
-  // document.querySelector('#audiostatus').style.background = 'green'
-  // document.querySelector('#audiostatus').textContent = 'signal'
-
-  //const theDiv = document.getElementById('log')
-  //const content = document.createTextNode(text)
-  //theDiv.appendChild(content)
 });
 
 //
@@ -59,16 +52,10 @@ document.addEventListener("signal", (event) => {
 //
 document.addEventListener("silence", (event) => {
   const volume = event.detail.volume.toFixed(9);
-  const timestamp = event.detail.timestamp;
-  const items = event.detail.items.toString().padEnd(3);
   const dBV = dB(event.detail.volume);
-
-  if (debuglog) console.log(`silence ${timestamp} ${items} ${volume} ${dBV}`);
-
-  // document.querySelector('#audiostatuscell').style.background = 'black'
-  // document.querySelector('#audiostatuscell').style.color = 'white'
-  // document.querySelector('#audiostatus').style.background = 'black'
-  // document.querySelector('#audiostatus').textContent = 'silence'
+  if (debuglog) {
+    console.log(`Silence detected - dBV: ${dBV}, volume: ${volume}`);
+  }
 });
 
 //
@@ -76,128 +63,19 @@ document.addEventListener("silence", (event) => {
 //
 document.addEventListener("mute", (event) => {
   const volume = event.detail.volume.toFixed(9);
-  const timestamp = event.detail.timestamp;
   const dBV = dB(event.detail.volume);
-
-  if (debuglog) console.log(`mute    ${timestamp} ${volume} ${dBV}`);
-
-  // document.querySelector('#audiostatus').textContent = 'mute'
-});
-
-//
-// prespeechstart handler
-//
-document.addEventListener("prespeechstart", (event) => {
   if (debuglog) {
-    //const volume = event.detail.volume.toFixed(9)
-    const timestamp = event.detail.timestamp;
-    //const dBV = dB(event.detail.volume)
-
-    //console.log(`%cPRE SPEECH START    ${timestamp} ${volume} ${dBV}`, 'color:yellow')
-    console.log(`%cPRE SPEECH START   ${timestamp}`, "color:blue");
+    console.log(`Mute detected - dBV: ${dBV}, volume: ${volume}`);
   }
-
-  restartRecording();
 });
 
 //
-// speechstart handler
-//
-document.addEventListener("speechstart", (event) => {
-  if (debuglog) {
-    //speechstartTime = event.detail.timestamp
-    console.log("%cSPEECH START", "color:greenyellow");
-  }
-
-  // document.querySelector('#recordingcell').style.background = 'green'
-  // document.querySelector('#recordingcell').style.color = 'white'
-  // document.querySelector('#recording').style.background = 'green'
-  // document.querySelector('#recording').style.color = 'white'
-  // document.querySelector('#recording').textContent = 'start'
-
-  //startRecording()
-});
-
-//
-// speechstop handler
-//
-document.addEventListener("speechstop", (event) => {
-  const duration = event.detail.duration;
-
-  if (debuglog) {
-    const averageSignalLevel = averageSignal();
-
-    console.log("%cSPEECH STOP", "color:lime");
-    console.log(`Total Duration in msecs  : ${duration}`);
-    console.log(
-      `Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS}`
-    );
-    console.log(`Average Signal level     : ${averageSignalLevel}`);
-    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`);
-    console.log(" ");
-  }
-
-  // document.querySelector('#recordingcell').style.color = 'white'
-  // document.querySelector('#recordingcell').style.background = 'black'
-  // document.querySelector('#recording').style.color = 'white'
-  // document.querySelector('#recording').style.background = 'black'
-  // document.querySelector('#recording').textContent = `stop. len: ${duration} msecs`
-
-  stopRecording();
-});
-
-//
-// speechabort handler
-//
-document.addEventListener("speechabort", (event) => {
-  const abort = event.detail.abort;
-
-  if (debuglog) {
-    const duration = event.detail.duration;
-    const averageSignalLevel = averageSignal();
-
-    console.log("%cSPEECH ABORT", "color:red");
-    console.log(`Abort reason             : ${abort}`);
-    console.log(`Total Duration in msecs  : ${duration}`);
-    console.log(
-      `Signal Duration in msecs : ${duration - MAX_INTERSPEECH_SILENCE_MSECS}`
-    );
-    console.log(`Average Signal level     : ${averageSignalLevel}`);
-    console.log(`Average Signal dB        : ${dB(averageSignalLevel)}`);
-    console.log(" ");
-  }
-
-  // document.querySelector('#recordingcell').style.color = 'white'
-  // document.querySelector('#recordingcell').style.background = 'red'
-  // document.querySelector('#recording').style.color = 'white'
-  // document.querySelector('#recording').style.background = 'red'
-  // document.querySelector('#recording').textContent = `abort. ${abort}`
-
-  abortRecording();
-});
-
-//
-// mutedmic handler
-//
-document.addEventListener("mutedmic", (event) => {
-  // document.querySelector('#microphonestatus').textContent = 'muted (off)'
-  // document.querySelector('#microphonestatus').style.background = 'red'
-  // document.querySelector('#microphonestatuscell').style.background = 'red'
-
-  console.log("%cMICROPHONE MUTED", "color:red");
-  console.log(" ");
-});
-
-//
-// unmutedmic handler
+// unmutedmic handler - This ensures the cake is visible when mic is active
 //
 document.addEventListener("unmutedmic", (event) => {
-  // document.querySelector('#microphonestatus').textContent = 'unmuted (on)'
-  // document.querySelector('#microphonestatus').style.background = 'green'
-  // document.querySelector('#microphonestatuscell').style.background = 'green'
-  document.getElementById("cake-holder").style.opacity = 1;
-  console.log("%cMICROPHONE UNMUTED", "color:green");
-  console.log(" ");
+  const cakeHolder = document.getElementById("cake-holder");
+  if (cakeHolder) {
+    cakeHolder.style.opacity = 1;
+    console.log("Microphone unmuted, cake holder visible");
+  }
 });
-
-// showConfiguration()

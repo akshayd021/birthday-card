@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Birthday Cake</title>
     <style>
       body {
         font-size: 18px;
@@ -59,6 +59,8 @@
         left: 53%;
         margin-top: -70px;
         margin-left: -125px;
+        opacity: 1;
+        transition: opacity 0.5s ease-in;
       }
 
       .plate {
@@ -406,6 +408,26 @@
           margin-left: -25%;
         }
       }
+
+      /* Add specific styles for blown candles */
+      .candle-blown .flame {
+        opacity: 0 !important;
+        transition: opacity 0.3s ease-out;
+      }
+
+      #cake-holder {
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+      }
+
+      #cake-holder.done {
+        opacity: 1;
+      }
+
+      #cake-holder.done .flame {
+        opacity: 0;
+        transition: opacity 0.3s ease-out;
+      }
     </style>
   </head>
   <body>
@@ -419,7 +441,7 @@
     <br />
     <br />
     <div class="mobile">
-      <div id="cake-holder" style="opacity: 0">
+      <div id="cake-holder">
         <div class="cake">
           <div class="plate"></div>
           <div class="layer layer-bottom"></div>
@@ -458,19 +480,30 @@
       </div>
     </div>
 
-    <script src="cake.js"></script>
     <script src="volume-meter.js"></script>
     <script src="audioDetectionConfig.js"></script>
     <script src="audioDetection.js"></script>
     <script src="audioStream.js"></script>
-
     <script src="demoAudioRecorder.js"></script>
     <script src="demoAudioDetectionListeners.js"></script>
     <script src="demo.js"></script>
     <script>
-      window.addEventListener("message", (event) => {
-        if (event.data === "showCake") {
-          document.querySelector("#cake-holder").classList.add("done");
+        // Initialize cake visibility
+        window.onload = function () {
+          const cakeHolder = document.getElementById("cake-holder");
+          if (cakeHolder) {
+            cakeHolder.style.opacity = 1;
+          }
+        };
+
+        // Listen for candle blown event from parent
+        window.addEventListener('message', function (event) {
+          if (event.data.type === 'CANDLES_BLOWN') {
+            document.body.classList.add('candle-blown');
+            const cakeHolder = document.getElementById("cake-holder");
+            if (cakeHolder) {
+              cakeHolder.classList.add('done');
+            }
         }
       });
     </script>
