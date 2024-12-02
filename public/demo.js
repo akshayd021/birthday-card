@@ -31,64 +31,48 @@ var rafID = null;
 
 var debuglog = false;
 
-window.onload = function () {
-  // grab our canvas
-  //canvasContext = document.getElementById( 'meter' ).getContext('2d');
-
+window.onload = async function () {
   // monkeypatch Web Audio
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-  // grab an audio context
+  // Create audio context
   audioContext = new AudioContext();
 
-  // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
-  // https://sites.google.com/a/chromium.org/dev/audio-video/autoplay
-  // https://stackoverflow.com/questions/50218162/web-autoplay-policy-change-resuming-context-doesnt-unmute-audio
-
-  // One-liner to resume playback when user interacted with the page.
-  document.querySelector("#start").addEventListener("click", function () {
-    audioContext.resume().then(() => {
-      console.log(
-        "User interacted with the page. Playback resumed successfully"
-      );
+  try {
+    // Request microphone access immediately
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        autoGainControl: false,
+        noiseSuppression: false,
+        channelCount: 1
+      }
     });
+
+    // Resume audio context (needed for iOS)
+    await audioContext.resume();
+
+    // Initialize audio processing
+    audioStream(stream);
+    console.log("Microphone access granted");
+
+  } catch (e) {
+    console.error("Error accessing microphone:", e);
+    alert("Please grant microphone access to continue");
+  }
+
+  // Debug controls
+  document.querySelector("#startconsoledebug").addEventListener("click", function () {
+    debuglog = true;
   });
 
-  document
-    .querySelector("#startconsoledebug")
-    .addEventListener("click", function () {
-      debuglog = true;
-    });
-
-  // debug log flag
   document.querySelector("#stopconsoledebug").addEventListener("click", () => {
     debuglog = false;
   });
-
-  // Attempt to get audio input
-  try {
-    // ask for an audio input
-    navigator.mediaDevices
-      .getUserMedia({
-        audio: {
-          mandatory: {
-            googEchoCancellation: "false",
-            googAutoGainControl: "false",
-            googNoiseSuppression: "false",
-            googHighpassFilter: "false",
-          },
-          optional: [],
-        },
-      })
-      .then(audioStream)
-      .catch(didntGetStream);
-  } catch (e) {
-    alert("getUserMedia threw exception :" + e);
-  }
 };
 
 function didntGetStream() {
-  alert("Please Access Mic or Mic Not  Found !");
+  alert("Please Access Mic or Mic Not Found!");
 }
 
 function drawLoop(time) {
