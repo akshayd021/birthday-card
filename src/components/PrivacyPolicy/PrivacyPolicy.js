@@ -1,9 +1,15 @@
 import React from "react";
+import { IoArrowBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const PrivacyPolicy = () => {
+  const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-5">
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-5 ">
+      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10 relative">
+        <div className="bg-gray-400 text-white p-2 rounded-full  absolute top-4 left-4 cursor-pointer">
+          <IoArrowBack className="text-2xl" onClick={() => navigate("/")} />
+        </div>
         <h1 className="text-3xl lg:text-4xl font-bold text-center text-blue-600 mb-6">
           Privacy Policy
         </h1>

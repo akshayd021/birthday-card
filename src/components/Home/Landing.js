@@ -9,7 +9,7 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import Loader from "../../shared/Loader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { logPageView } from "../../utils/addGoogleAnalytics";
 
 const Landing = () => {
@@ -349,6 +349,9 @@ const Landing = () => {
               </>
             </div>
           </div>
+        </div>
+        <div className="text-black inline-flex underline text-lg font-[500] absolute bottom-3 right-5">
+          <Link to={"/privacy-policy"}>PrivacyPolicy</Link>
         </div>
       </div>
     </div>
