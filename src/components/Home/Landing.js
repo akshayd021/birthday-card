@@ -139,7 +139,7 @@ const Landing = () => {
   };
 
   return (
-    <div className="lg:flex min-h-screen">
+    <div className="lg:flex min-h-screen overflow-scroll">
       {loading && <Loader loading={loading} />}
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
@@ -225,14 +225,14 @@ const Landing = () => {
         className="flex-1 bg-cover bg-center flex items-center justify-center rounded-t-xl lg:rounded-none relative"
         style={{ backgroundImage: "url(/assets/secc.jpg)" }}
       >
-        <div className="  flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[90%] text-black">
-          <div className="rounded-lg  bg-white shadow-md p-4 relative">
-            <div className="absolute top-[-54px] lg:left-[50%] left-[45%] transform -translate-x-[50%] flex gap-4">
-              <img src="./assets/candle.png" alt="Candle" className="w-16 " />
-              <img src="./assets/candle.png" alt="Candle" className="w-16" />
-              <img src="./assets/candle.png" alt="Candle" className="w-16" />
-            </div>
-            <div className="w-full p-6 rounded-md ">
+        <div className="flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[94%] text-black mb-5">
+          <div className=" flex gap-4 mb-[-8px]">
+            <img src="./assets/candle.png" alt="Candle" className="w-16 " />
+            <img src="./assets/candle.png" alt="Candle" className="w-16" />
+            <img src="./assets/candle.png" alt="Candle" className="w-16" />
+          </div>
+          <div className="rounded-lg  bg-white shadow-md md:p-5 p-2 relative">
+            <div className="w-full p-2 rounded-md ">
               <>
                 <h2 className="lg:text-lg text-sm font-semibold mb-4">
                   Enter the birthday person's name, age, and a custom message
@@ -350,8 +350,31 @@ const Landing = () => {
             </div>
           </div>
         </div>
-        <div className="text-black inline-flex underline text-lg font-[500] absolute bottom-3 right-5">
-          <Link to={"/privacy-policy"}>PrivacyPolicy</Link>
+
+        <div className="absolute bottom-3 md:right-2  flex flex-col md:flex-row md:items-end  md:gap-5  gap-2 mt-2 text-black text-lg font-medium w-[90%] md:w-auto">
+          {/* Row for Privacy Policy and Refund Policy */}
+          <div className="flex justify-between items-center gap-5  ">
+            <Link
+              to={"/privacy-policy"}
+              className="hover:text-blue-600 underline md:text-lg text-sm"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to={"/refund-policy"}
+              className="hover:text-blue-600 underline  md:text-lg text-sm"
+            >
+              Refund Policy
+            </Link>
+          </div>
+
+          {/* Terms & Conditions */}
+          <Link
+            to={"/term-condition"}
+            className="hover:text-blue-600 underline text-center md:text-right  md:text-lg text-sm"
+          >
+            Terms & Conditions
+          </Link>
         </div>
       </div>
     </div>
