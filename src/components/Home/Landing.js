@@ -185,7 +185,7 @@ const Landing = () => {
         className="flex-1 bg-cover bg-center flex items-center justify-center relative py-[6rem]"
         style={{ backgroundImage: "url(/assets/fir.jpg)" }}
       >
-        <div className="absolute lg:top-4 top-1 lg:left-7 left-0">
+        <div className="absolute top-4 lg:left-7 left-0">
           <img
             src="/assets/balloon.png"
             alt="text"
@@ -222,7 +222,7 @@ const Landing = () => {
       </div>
 
       <div
-        className="flex-1 bg-cover bg-center flex items-center justify-center rounded-t-xl lg:rounded-none"
+        className="flex-1 bg-cover bg-center flex items-center justify-center rounded-t-xl lg:rounded-none relative"
         style={{ backgroundImage: "url(/assets/secc.jpg)" }}
       >
         <div className="  flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[90%] text-black">
