@@ -90,13 +90,24 @@ const RefundPolicy = () => {
           <p>
             <strong>Fanmart Media Private Limited</strong>
             <br />
-            Email:{" "}
+            <strong>Email:</strong>  
             <a
               href="mailto:fanmartindia@gmail.com"
               className="text-blue-500 underline"
             >
-              fanmartindia@gmail.com
+             {" "} fanmartindia@gmail.com
             </a>
+            <br />
+            <br />
+            <strong> Address: </strong>
+            <span>
+              Fanmart Media Private Limited <br />
+              3RD FLOOR, NO 1664, 27TH MAIN SECTOR 2, HSR LAYOUT, <br />
+              Bengaluru, Bengaluru Urban, Karnataka, 560102 <br />
+              Karnataka <br />
+              India <br />
+              9980421041 <br />
+            </span>
           </p>
         </div>
       </div>
