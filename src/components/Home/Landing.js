@@ -18,7 +18,7 @@ const Landing = () => {
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const baseCustomUrl = "https://birthday-cake-sigma.vercel.app/user/";
+  const baseCustomUrl = "https://www.waiwishes.com/user/";
   const location = useLocation();
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const Landing = () => {
 
         const newUser = response?.data.user;
         setLoading(false);
-        const dummyLink = `https://birthday-cake-sigma.vercel.app/user/${
+        const dummyLink = `https://www.waiwishes.com/user/${
           customUrlEnabled ? values.customUrlPart : newUser._id
         }`;
 

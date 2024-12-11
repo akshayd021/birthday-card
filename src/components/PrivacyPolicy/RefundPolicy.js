@@ -90,12 +90,13 @@ const RefundPolicy = () => {
           <p>
             <strong>Fanmart Media Private Limited</strong>
             <br />
-            <strong>Email:</strong>  
+            <strong>Email:</strong>
             <a
               href="mailto:fanmartindia@gmail.com"
               className="text-blue-500 underline"
             >
-             {" "} fanmartindia@gmail.com
+              {" "}
+              fanmartindia@gmail.com
             </a>
             <br />
             <br />
