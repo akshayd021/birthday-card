@@ -9,10 +9,12 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import Loader from "../../shared/Loader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { logPageView } from "../../utils/addGoogleAnalytics";
 
 const Landing = () => {
+  const { name, message, age, customUrl } = useParams();
+  console.log("name: ", name);
   const [customUrlEnabled, setCustomUrlEnabled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState("");
@@ -20,10 +22,22 @@ const Landing = () => {
   const [loading, setLoading] = useState(false);
   const baseCustomUrl = "https://www.waiwishes.com/user/";
   const location = useLocation();
-
+  const queryParams = new URLSearchParams(location.search);
+  // const message = queryParams.get("message");
+  console.log(message, "Mess");
   useEffect(() => {
     logPageView(location.pathname);
   }, [location]);
+
+  useEffect(() => {
+    if (name) {
+      setAnimation(true);
+      setTimeout(() => {
+        setModalOpen(true);
+        setAnimation(false);
+      }, 7000);
+    }
+  }, [name]);
 
   const formik = useFormik({
     initialValues: {
@@ -50,53 +64,91 @@ const Landing = () => {
         : Yup.string().notRequired(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      try {
-        if (window.gtag) {
-          window.gtag("event", "submit_button_click", {
-            event_category: "Form",
-            event_label: "User Submission",
-            value: 1,
-          });
-        }
+      if (window.gtag) {
+        window.gtag("event", "submit_button_click", {
+          event_category: "Form",
+          event_label: "User Submission",
+          value: 1,
+        });
+      }
+      if (customUrlEnabled) {
+        try {
+          const { data } = await axios.get(
+            `https://birthday-cake-backend-1.onrender.com/api/check-custom/${values?.customUrlPart}`
+          );
+          if (data.exists) {
+            toast.error("Custom URL already taken. Please choose another.", {
+              theme: "dark",
+            });
+          } else {
+            setLoading(true);
 
-        setLoading(true);
-        const requestData = {
-          ...values,
-          customUrl: customUrlEnabled ? values.customUrlPart : undefined,
+            const payData = {
+              name: values?.name,
+              amount: 1,
+              msg: values?.message,
+              age: values?.age,
+              customUrl: values?.customUrlPart,
+            };
+
+            try {
+              const { data } = await axios.post(
+                "https://birthday-cake-backend-1.onrender.com/api/payment",
+                payData
+              );
+              if (data?.redirectUrl) {
+                window.location.href = data.redirectUrl;
+              } else {
+                toast.error("Redirect URL not provided by the backend", {theme:"dark"});
+              }
+            } catch (error) {
+              toast.error("Error processing payment:" , {theme:"dark"});
+            }
+          }
+        } catch (error) {
+          console.error("Error checking custom URL:", error.message);
+          toast.error(
+            "An error occurred while checking the custom URL. Please try again.",
+            { theme: "dark" }
+          );
+        }
+      } else {
+        const SendData = {
+          name: values?.name,
+          age: values?.age,
+          message: values?.message,
         };
 
-        const response = await axios.post(
-          "https://birthday-cake-backend-1.onrender.com/api/create-user",
-          requestData
-        );
+        try {
+          const response = await axios.post(
+            "https://birthday-cake-backend-1.onrender.com/api/create-user",
+            SendData
+          );
 
-        const newUser = response?.data.user;
-        setLoading(false);
-        const dummyLink = `https://www.waiwishes.com/user/${
-          customUrlEnabled ? values.customUrlPart : newUser._id
-        }`;
-
-        setUser({
-          ...newUser,
-          dummyLink,
-        });
-        setAnimation(true);
-        setTimeout(() => {
-          setModalOpen(true);
-          setAnimation(false);
-        }, 7000);
-        resetForm();
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        setLoading(false);
-        toast.error(error?.error || "Custom URL already taken", {
-          theme: "dark",
-          position: "top-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+          if (response?.data?.success === "true") {
+            toast.success("User Created successfully!", {
+              theme: "dark",
+              position: "top-right",
+              autoClose: 3000,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+            setUser(response?.data);
+            setAnimation(true);
+            setTimeout(() => {
+              setModalOpen(true);
+              setAnimation(false);
+            }, 7000);
+          } else {
+            toast.error("Please try again!", { theme: "dark" });
+          }
+        } catch (error) {
+          console.error("Error occurred while creating user:", error.message);
+          toast.error("An error occurred. Please try again!", {
+            theme: "dark",
+          });
+        }
       }
     },
   });
@@ -111,9 +163,9 @@ const Landing = () => {
   const handleCopy = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
-        .writeText(user?.dummyLink)
-        .then(() => alert("URL copied to clipboard!"))
-        .catch((error) => console.error("Failed to copy text:", error));
+        .writeText(user?.dummyLink || baseCustomUrl + customUrl)
+        .then(() => toast.success("URL copied to clipboard!", {theme:"dark"}))
+        .catch((error) => toast.error("Failed to copy text:", {theme:"dark"}));
     } else {
       // Fallback for unsupported browsers
       const textArea = document.createElement("textarea");
@@ -132,16 +184,17 @@ const Landing = () => {
           draggable: true,
         });
       } catch (error) {
-        console.error("Failed to copy text:", error);
+        toast.error("Failed to copy text:", {theme:"dark"});
       }
       document.body.removeChild(textArea);
     }
   };
 
+
   return (
     <div className="lg:flex min-h-screen overflow-scroll">
       {loading && <Loader loading={loading} />}
-      {modalOpen && (
+      {modalOpen && !name &&(
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
           <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
             <div className="right-2 absolute top-2 text-3xl">
@@ -159,7 +212,7 @@ const Landing = () => {
             </p>
             <div className="relative text-blue-600 font-medium text-lg underline mb-4 p-2 flex items-center border w-full">
               <span className="truncate text-[16px]">
-                {user?.dummyLink?.length > 40
+                { !name && user?.dummyLink?.length > 40
                   ? `${user?.dummyLink.slice(0, 42)}...`
                   : user?.dummyLink}
               </span>
@@ -173,10 +226,51 @@ const Landing = () => {
           </div>
         </div>
       )}
+
+      {modalOpen && name && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
+          <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
+            <div className="right-2 absolute top-2 text-3xl">
+              <IoClose
+                className=""
+                onClick={() => {
+                  setModalOpen(false);
+                  setAnimation(false);
+                }}
+              />
+            </div>
+            <p className="mb-4 text-gray-600 text-lg font-semibold flex items-center gap-3">
+              <img src="/assets/c-url-icon.png" alt="url" />
+              Send This Link
+            </p>
+            <div className="relative text-blue-600 font-medium text-lg underline mb-4 p-2 flex items-center border w-full">
+              <span className="truncate text-[16px]">
+                {(baseCustomUrl + customUrl).length > 40
+                  ? `${baseCustomUrl + customUrl?.slice(0, 42)}...`
+                  : baseCustomUrl + customUrl}
+              </span>
+              <div
+                className="absolute right-0 p-3 cursor-pointer border-2 border-blue-500 bg-blue-500 text-white hover:bg-blue-700"
+                onClick={handleCopy}
+              >
+                <MdOutlineContentCopy />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {animation && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-brightness-50 z-50 backdrop-blur-md">
           <div className="flex justify-center items-center m-auto">
-            <Envelope name={user?.name} />
+            <Envelope name={user?.user?.name} />
+          </div>
+        </div>
+      )}
+      {animation && name && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-brightness-50 z-50 backdrop-blur-md">
+          <div className="flex justify-center items-center m-auto">
+            <Envelope name={name} />
           </div>
         </div>
       )}
@@ -227,9 +321,9 @@ const Landing = () => {
       >
         <div className="flex items-center flex-col justify-center h-full lg:w-[70%] py-14 lg:py-0 w-[94%] text-black mb-5">
           <div className=" flex gap-4 mb-[-8px]">
-            <img src="./assets/candle.png" alt="Candle" className="w-16 " />
-            <img src="./assets/candle.png" alt="Candle" className="w-16" />
-            <img src="./assets/candle.png" alt="Candle" className="w-16" />
+            <img src="/assets/candle.png" alt="Candle" className="w-16 " />
+            <img src="/assets/candle.png" alt="Candle" className="w-16" />
+            <img src="/assets/candle.png" alt="Candle" className="w-16" />
           </div>
           <div className="rounded-lg  bg-white shadow-md md:p-5 p-2 relative">
             <div className="w-full p-2 rounded-md ">
@@ -313,7 +407,7 @@ const Landing = () => {
                     />
                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
                     <span className="ms-3 lg:text-lg  text-sm  font-medium">
-                      Get a custom URL for ₹ 1 
+                      Get a custom URL for ₹ 1
                     </span>
                   </label>
                   {customUrlEnabled && (
@@ -366,8 +460,6 @@ const Landing = () => {
               Refund Policy
             </Link>
           </div>
-
-          {/* Terms & Conditions */}
           <Link
             to={"/term-condition"}
             className="hover:text-blue-600 underline text-center md:text-right  md:text-lg text-sm"

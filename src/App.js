@@ -24,6 +24,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/user/:id" element={<User />} />
+        <Route
+          path="/:name/:message/:age/:customUrl"
+          element={<Landing />}
+        />
+
+        {/* <Route
+          path="/:name/:message/:age/:customUrl"
+          element={<CustomPage />}
+        /> */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/term-condition" element={<TermsAndConditions />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />

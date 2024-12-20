@@ -12,9 +12,9 @@ const User = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(
-          `https://birthday-cake-backend-1.onrender.com/api/get-user/${id}`
-        );
+        const res = await axios.get(`https://birthday-cake-backend-1.onrender.com/api/get-user/${id}`);
+
+        console.log("response from user: ", res?.data);
         setUser(res?.data?.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
