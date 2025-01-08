@@ -20,7 +20,7 @@ const Landing = () => {
   const [user, setUser] = useState("");
   const [animation, setAnimation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const baseCustomUrl = "https://www.waiwishes.com/user/";
+  const baseCustomUrl = "https://www.waiwishes.com/surprise/";
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   // const message = queryParams.get("message");
@@ -85,7 +85,7 @@ const Landing = () => {
 
             const payData = {
               name: values?.name,
-              amount: 1,
+              amount: 9,
               msg: values?.message,
               age: values?.age,
               customUrl: values?.customUrlPart,
@@ -99,10 +99,12 @@ const Landing = () => {
               if (data?.redirectUrl) {
                 window.location.href = data.redirectUrl;
               } else {
-                toast.error("Redirect URL not provided by the backend", {theme:"dark"});
+                toast.error("Redirect URL not provided by the backend", {
+                  theme: "dark",
+                });
               }
             } catch (error) {
-              toast.error("Error processing payment:" , {theme:"dark"});
+              toast.error("Error processing payment:", { theme: "dark" });
             }
           }
         } catch (error) {
@@ -164,8 +166,12 @@ const Landing = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
         .writeText(user?.dummyLink || baseCustomUrl + customUrl)
-        .then(() => toast.success("URL copied to clipboard!", {theme:"dark"}))
-        .catch((error) => toast.error("Failed to copy text:", {theme:"dark"}));
+        .then(() =>
+          toast.success("URL copied to clipboard!", { theme: "dark" })
+        )
+        .catch((error) =>
+          toast.error("Failed to copy text:", { theme: "dark" })
+        );
     } else {
       // Fallback for unsupported browsers
       const textArea = document.createElement("textarea");
@@ -184,19 +190,18 @@ const Landing = () => {
           draggable: true,
         });
       } catch (error) {
-        toast.error("Failed to copy text:", {theme:"dark"});
+        toast.error("Failed to copy text:", { theme: "dark" });
       }
       document.body.removeChild(textArea);
     }
   };
 
-
   return (
     <div className="lg:flex min-h-screen overflow-scroll">
       {loading && <Loader loading={loading} />}
-      {modalOpen && !name &&(
+      {modalOpen && !name && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
-          <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
+          <div className="bg-white p-5 rounded-lg shadow-xl max-w-[30rem] w-full text-center transform transition-all duration-300 scale-105 relative">
             <div className="right-2 absolute top-2 text-3xl">
               <IoClose
                 className=""
@@ -206,13 +211,16 @@ const Landing = () => {
                 }}
               />
             </div>
-            <p className="mb-4 text-gray-600 text-lg font-semibold flex items-center gap-3">
+            <div className="mb-4 text-gray-600 text-[1rem]  font-semibold flex capitalize items-center gap-3">
               <img src="/assets/c-url-icon.png" alt="url" />
-              Send This Link
-            </p>
+              <p className="text-left">
+                Share this link with your birthday friend for a <br /> special
+                surprise!
+              </p>
+            </div>
             <div className="relative text-blue-600 font-medium text-lg underline mb-4 p-2 flex items-center border w-full">
               <span className="truncate text-[16px]">
-                { !name && user?.dummyLink?.length > 40
+                {!name && user?.dummyLink?.length > 40
                   ? `${user?.dummyLink.slice(0, 42)}...`
                   : user?.dummyLink}
               </span>
@@ -229,7 +237,7 @@ const Landing = () => {
 
       {modalOpen && name && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 backdrop-blur-md px-5">
-          <div className="bg-white p-5 rounded-lg shadow-xl max-w-md w-full text-center transform transition-all duration-300 scale-105 relative">
+          <div className="bg-white p-5 rounded-lg shadow-xl  max-w-[30rem]  w-full text-center transform transition-all duration-300 scale-105 relative">
             <div className="right-2 absolute top-2 text-3xl">
               <IoClose
                 className=""
@@ -239,10 +247,13 @@ const Landing = () => {
                 }}
               />
             </div>
-            <p className="mb-4 text-gray-600 text-lg font-semibold flex items-center gap-3">
+            <div className="mb-4 text-gray-600 text-[1rem]  font-semibold flex capitalize items-center gap-3">
               <img src="/assets/c-url-icon.png" alt="url" />
-              Send This Link
-            </p>
+              <p className="text-left">
+                Share this link with your birthday friend for a <br /> special
+                surprise!
+              </p>
+            </div>
             <div className="relative text-blue-600 font-medium text-lg underline mb-4 p-2 flex items-center border w-full">
               <span className="truncate text-[16px]">
                 {(baseCustomUrl + customUrl).length > 40
@@ -407,7 +418,7 @@ const Landing = () => {
                     />
                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
                     <span className="ms-3 lg:text-lg  text-sm  font-medium">
-                      Get a custom URL for ₹ 1
+                      Get a custom URL for ₹ 9
                     </span>
                   </label>
                   {customUrlEnabled && (
@@ -440,6 +451,14 @@ const Landing = () => {
                     Submit
                   </button>
                 </form>
+                <Link target="_blank" to={'https://cutt.ly/fe07oJOC'}>
+                <button
+                  type="submit"
+                  className="w-full py-2 mt-4 px-4 bg-white border-[1.5px] border-blue-600 hover:shadow-lg hover:underline text-blue-600 rounded-md  focus:outline-none focus:ring-2 "
+                >
+                  Download Birthday Wishes App
+                </button>
+                </Link>
               </>
             </div>
           </div>

@@ -213,6 +213,7 @@ const Book = ({ name, message }) => {
               : message}
           </p>
         </div>
+
       </HTMLFlipBook>
     </div>
   );

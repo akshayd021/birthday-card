@@ -23,7 +23,7 @@ function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/user/:id" element={<User />} />
+        <Route path="/surprise/:id" element={<User />} />
         <Route
           path="/:name/:message/:age/:customUrl"
           element={<Landing />}
