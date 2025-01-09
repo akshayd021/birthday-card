@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Envelope from "../animation";
-import { FaRegUser } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaRegUser, FaWhatsapp } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineContentCopy } from "react-icons/md";
 import Loader from "../../shared/Loader";
@@ -211,7 +211,7 @@ const Landing = () => {
                 }}
               />
             </div>
-            <div className="mb-4 text-gray-600 text-[1rem]  font-semibold flex capitalize items-center gap-3">
+            <div className="mb-4 text-gray-600 text-[1rem] font-semibold flex capitalize items-center gap-3">
               <img src="/assets/c-url-icon.png" alt="url" />
               <p className="text-left">
                 Share this link with your birthday friend for a <br /> special
@@ -230,6 +230,38 @@ const Landing = () => {
               >
                 <MdOutlineContentCopy />
               </div>
+            </div>
+            <div className="flex justify-center items-center text-2xl gap-8">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(
+                  user?.dummyLink || "Check out this link!"
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="hover:text-blue-500" />
+              </a>
+
+              <a
+                href="https://www.instagram.com/direct/inbox/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaInstagram
+                  onClick={handleCopy}
+                  className="hover:text-blue-500"
+                />
+              </a>
+
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  user?.dummyLink || "https://www.waiwishes.com"
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebook className="hover:text-blue-500" />
+              </a>
             </div>
           </div>
         </div>
@@ -451,13 +483,13 @@ const Landing = () => {
                     Submit
                   </button>
                 </form>
-                <Link target="_blank" to={'https://cutt.ly/fe07oJOC'}>
-                <button
-                  type="submit"
-                  className="w-full py-2 mt-4 px-4 bg-white border-[1.5px] border-blue-600 hover:shadow-lg hover:underline text-blue-600 rounded-md  focus:outline-none focus:ring-2 "
-                >
-                  Download Birthday Wishes App
-                </button>
+                <Link target="_blank" to={"https://cutt.ly/fe07oJOC"}>
+                  <button
+                    type="submit"
+                    className="w-full py-2 mt-4 px-4 bg-white border-[1.5px] border-blue-600 hover:shadow-lg hover:underline text-blue-600 rounded-md  focus:outline-none focus:ring-2 "
+                  >
+                    Download Birthday Wishes App
+                  </button>
                 </Link>
               </>
             </div>

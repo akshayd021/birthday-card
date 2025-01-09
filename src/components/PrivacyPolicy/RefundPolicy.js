@@ -107,7 +107,6 @@ const RefundPolicy = () => {
               Bengaluru, Bengaluru Urban, Karnataka, 560102 <br />
               Karnataka <br />
               India <br />
-              9980421041 <br />
             </span>
           </p>
         </div>
