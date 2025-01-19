@@ -74,7 +74,7 @@ const Landing = () => {
       if (customUrlEnabled) {
         try {
           const { data } = await axios.get(
-            `https://birthday-cake-backend-1.onrender.com/api/check-custom/${values?.customUrlPart}`
+            `https://13.201.137.218/api/check-custom/${values?.customUrlPart}`
           );
           if (data.exists) {
             toast.error("Custom URL already taken. Please choose another.", {
@@ -93,7 +93,7 @@ const Landing = () => {
 
             try {
               const { data } = await axios.post(
-                "https://birthday-cake-backend-1.onrender.com/api/payment",
+                "https://13.201.137.218/api/payment",
                 payData
               );
               if (data?.redirectUrl) {
@@ -123,7 +123,7 @@ const Landing = () => {
 
         try {
           const response = await axios.post(
-            "https://birthday-cake-backend-1.onrender.com/api/create-user",
+            "https://13.201.137.218/api/create-user",
             SendData
           );
 
